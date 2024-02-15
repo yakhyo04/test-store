@@ -6,6 +6,21 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  .image-upper__cover::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(94, 93, 93, {{ section.settings.select_range }});
+  }
+
+  video{
+    object-fit: cover;
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -45,6 +60,7 @@
 <div class="multirow section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
   <div class="multirow__inner page-width">
     {%- for block in section.blocks -%}
+      {%   assign video_id = block.settings.video.id | default: block.settings.video_url.id %}
       <div
         class="image-with-text isolate{{ borders_class }}{{ corners_class }}{{ padding_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
         {{ block.shopify_attributes }}
@@ -52,7 +68,8 @@
         <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.image_layout contains 'alternate' %}{% cycle odd_class, even_class %}{% else %}{{ odd_class }}{% endif %}">
           <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }} grid__item">
             <div
-              class="image-with-text__media image-with-text__media--{{ section.settings.image_height }} gradient color-{{ section.settings.row_color_scheme }} global-media-settings{% if block.settings.image != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}"
+              style="position: relative;"
+              class="image-with-text__media image-upper__cover image-with-text__media--{{ section.settings.image_height }} gradient color-{{ section.settings.row_color_scheme }} global-media-settings{% if block.settings.image != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}"
               {% if section.settings.image_height == 'adapt' and block.settings.image != blank %}
                 style="padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"
               {% endif %}
@@ -67,9 +84,42 @@
                   | image_url: width: 1500
                   | image_tag: sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
                 }}
-              {%- else -%}
+              {%-  elsif block.settings.video != blank -%}
+                {{ block.settings.video | video_tag:
+                  width: '100%',
+                  height: '100%',
+                  autoplay: true,
+                  loop: true,
+                  controls: false,
+                  muted: true }}
+                {%-  elsif block.settings.video_url.type == "youtube" -%}
+                  <iframe
+                    src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1&mute=1&loop=1&controls=0"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen
+                    style="border: none;"
+                    width="100%"
+                    height="100%"
+                  ></iframe>
+                {%- elsif block.settings.video_url.type == "vimeo" -%}
+                  <iframe
+                    src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&mute=1&loop=1&controls=0"
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen
+                  ></iframe>
+                {%- else -%}
                 {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
+
+                <p style="position: fixed; opacity: 1; margin: 0;
+                {% if block.settings.bottom_text_select == 'top' %}
+                  top: 0;
+                {% elsif block.settings.bottom_text_select == 'center' %}
+                  top: 50%;
+                {% else %}
+                  bottom: 0; 
+                {% endif %}
+                  color: {{ block.settings.bottom_text_color }}; font-size: {{ block.settings.bottom_text_size }}px; width: 100%; text-align: center;">{{ block.settings.bottom_text }}</p>
             </div>
           </div>
           <div class="image-with-text__text-item grid__item">
@@ -159,6 +209,15 @@
       "default": "medium",
       "label": "t:sections.multirow.settings.desktop_image_width.label",
       "info": "t:sections.multirow.settings.desktop_image_width.info"
+    },
+    {
+      "type": "range",
+      "id": "select_range",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Cover opacity",
+      "default": 0.4
     },
     {
       "type": "select",
@@ -348,6 +407,67 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.multirow.blocks.row.settings.image.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_video_looping",
+          "label": "t:sections.video.settings.enable_video_looping.label",
+          "default": true
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Choose video"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Put video url",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
+        },
+        {
+          "type": "select",
+          "id": "bottom_text_select",
+          "label": "Select the text position",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_text_color",
+          "default": "#000",
+          "label": "Bottom text color"
+        },
+        {
+          "type": "range",
+          "id": "bottom_text_size",
+          "min": 10,
+          "max": 100,
+          "step": 2,
+          "label": "Text size",
+          "unit": "px",
+          "default": 24
+        },
+        {
+          "type": "text",
+          "id": "bottom_text",
+          "default": "Lorem ipsum dolor",
+          "label": "Bottom text"
         },
         {
           "type": "text",
