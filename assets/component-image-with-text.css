@@ -6,11 +6,45 @@
   position: relative;
 }
 
+.position__relative{
+  position: relative;
+}
+
 @media screen and (min-width: 750px) {
   .image-with-text__grid--reverse {
     flex-direction: row-reverse;
   }
 }
+
+ .image-upper__cover::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+  }
+  .bottom__text{
+    position: fixed; 
+    opacity: 1; 
+    margin: 0;
+    width: 100%; 
+    text-align: center;
+  }
+  .bottom__text--top{
+    top: 0;
+  }
+  .bottom__text--center{
+    top: 50%;
+  }
+  .bottom__text--bottom{
+    bottom: 0;
+  }
+
+  video{
+    object-fit: cover;
+  }
 
 .image-with-text__media {
   min-height: 100%;
