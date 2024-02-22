@@ -1,0 +1,166 @@
+<header class="header2">
+    <div class="page-width">
+        <div class="header__wrapper">
+            <a href="/" class="header__logo--wrapper">
+                {% if section.settings.logo %}
+                    <img class="header__logo--image" src="{{ section.settings.logo | image_url: width: 200 }}">
+                {%  elsif section.settings.logo_text %}
+                    <span class="header__logo--text">{{ section.settings.logo_text }}</span>
+                {% endif %}
+            </a>
+
+            {% comment %} <ul class="header__menus">
+                {% for link in section.settings.menu.links %}
+                    <li class="header__item">
+                <a class="header__item--link {% if link.current %}active__link{% endif %}" href="{{ link.url }}">{{ link.title | escape }}</a>
+                        {% if link.links %}
+                            <ul class="header__childlink">
+                            {% for childlink in link.links %}
+                                <li class="header__childlink--item">
+                                    <a class="header__childlink--link {% if childlink.current %}active__link{% endif %}" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul> {% endcomment %}
+
+            <ul class="header__menus">
+                {% for link in section.settings.menu.links %}
+                    <li class="header__item">
+                    {% if link.links != blank %}
+                        <details class="header__details--item">
+                            <summary class="header__summary--item">
+                                <span class="header__item--link {% if link.current %}active__link{% endif %}" href="{{ link.url }}">{{ link.title | escape }}</span>
+                                <span class="header__item--caret {% if link.current %}active__caret{% endif %}">
+                                    {% render 'icon-caret' %}
+                                </span>
+                            </summary>
+                            <ul class="header__childlink"
+                            >
+                                {% for childlink in link.links %}
+                                <li class="header__childlink--item">
+                                    <a class="header__childlink--link {% if childlink.current %}active__link{% endif %}" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    {% else %}
+                        <a class="header__item--link {% if link.current %}active__link{% endif %}" href="{{ link.url }}">{{ link.title | escape }}</a>
+                    {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if section.settings.show_search %}
+            <form action="{{ routes.search_url }}" class="header__search--form">
+                <input class="header__search--input" type="search" name="q">
+                <button class="header__search--icon" type="submit">
+                    {% render 'icon-search' %}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<style>
+    .header__wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .header__search--icon{
+        background-color: #FB2E86;
+        border: none;
+        height: 100%;
+        padding: 8px 13px;
+    }
+    .header__search--form{
+        display: flex;
+        align-items: center;
+        border: 1px solid #E7E6EF;
+        width: 317px;
+    }
+    .header__search--input{
+        border: none;
+        height: 100%;
+        width: 100%;
+        outline: none;
+    }
+    .header__menus{
+        display: flex;
+        align-items: center;
+        gap: 35px;
+        list-style: none;
+    }
+    .header__childlink--link,
+    .header__item--link{
+        text-decoration: none;
+        color: #0D0E43;
+    }
+    .active__link{
+        color: #FB2E86;
+    }
+    .header__childlink--link:hover,
+    .header__item--link:hover{
+        color: #FB2E86;
+    }
+    .header__childlink{
+        position: absolute;
+        width: 20rem;
+        min-width: 100%;
+        background: #fff;
+        z-index:99999;
+        border: 1px solid #E7E6EF;
+        list-style-type: none;
+        padding: .8rem 2rem;
+    }
+    .header__item--caret .icon-caret{
+        position: relative;
+        right: 0;
+        top: -1px;
+    }
+    .active__caret .icon-caret{
+        color: #FB2E86;
+    }
+    details[open]>.header__summary--item .icon-caret{
+        transform: rotate(180deg);
+    }
+    .header__details--item{
+        position: relative;
+    }
+</style>
+
+{% schema %}
+{
+    "name": "Header 2",
+    "settings": [
+        {
+            "type": "link_list",
+            "id": "menu",
+            "default": "main-menu",
+            "label": "Link lists"
+        },
+        {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo Image"
+        },
+        {
+            "type": "text",
+            "id": "logo_text",
+            "default": "Logo",
+            "label": "Logo text"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_search",
+            "label": "Show search form?",
+            "default": true
+        }
+    ]
+}
+{% endschema %}

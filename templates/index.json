@@ -67,14 +67,19 @@
         "padding_bottom": 36
       }
     },
-    "collapsible-section": {
-      "type": "collapsible-section",
+    "header-topbar": {
+      "type": "header-topbar",
+      "settings": {}
+    },
+    "header2": {
+      "type": "header2",
       "settings": {}
     }
   },
   "order": [
     "image_banner",
-    "collapsible-section",
+    "header-topbar",
+    "header2",
     "featured_collection"
   ]
 }

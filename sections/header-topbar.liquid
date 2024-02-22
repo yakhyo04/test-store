@@ -1,0 +1,129 @@
+<div class="header__topbar">
+    <div class="page-width">
+        <div class="header__topbar--wrapper">
+            <div class="header__topbar--left">
+                <div>
+                    {% if section.settings.email %}
+                        {% render 'icon-email' %}
+                        <span>{{ section.settings.email }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if section.settings.number %}
+                        {% render 'icon-number' %}
+                        <span>{{ section.settings.number }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="header__topbar--right">
+                <span class="header__topbar--link">{{ section.settings.language }} {% render 'icon-bottom' %}</span>
+                <span class="header__topbar--link">{{ section.settings.currency }} {% render 'icon-bottom' %}</span>
+                <a class="header__topbar--link" href="{{ routes.account_url }}">
+                    {{ section.settings.login }}
+                    {% render 'icon-login' %}
+                </a>
+                <a class="header__topbar--link" href="/pages/wishlist">
+                    {{ section.settings.wishlist }}
+                    {% render 'icon-wishlist' %}
+                </a>
+                <a class="header__topbar--link" href="{{ routes.cart_url }}">
+                    {% render 'icon_cart' %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header__topbar{
+        background-color: {{ section.settings.background_color }};
+        color: {{ section.settings.color }};
+        padding: 13px 0;
+    }
+    .header__topbar--wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .header__topbar--left{
+        display: flex;
+        gap: 48px;
+        align-items: center;
+    }
+    .header__topbar--left div{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 16px;
+    }
+    .header__topbar--right{
+        display: flex;
+        gap: 18px;
+        align-items: center;
+    }
+    .header__topbar--link{
+        text-decoration: none;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 16px;
+    }
+</style>
+
+{% schema %}
+{
+    "name": "Header topbar",
+    "settings": [
+        {
+            "type": "text",
+            "id": "email",
+            "default": "yahyo@gmail.com",
+            "label": "Email"
+        },
+        {
+            "type": "text",
+            "id": "number",
+            "default": "(998)901234567",
+            "label": "Phone number"
+        },
+        {
+            "type": "color",
+            "id": "background_color",
+            "default": "#7E33E0",
+            "label": "Background Color"
+        },
+        {
+            "type": "color",
+            "id": "color",
+            "default": "#fff",
+            "label": "Color"
+        },
+        {
+            "type": "text",
+            "id": "login",
+            "default": "Login",
+            "label": "Login text"
+        },
+        {
+            "type": "text",
+            "id": "wishlist",
+            "default": "Wishlist",
+            "label": "Wishlist text"
+        },
+        {
+            "type": "text",
+            "id": "language",
+            "default": "English",
+            "label": "Language"
+        },
+        {
+            "type": "text",
+            "id": "currency",
+            "default": "USD",
+            "label": "Currency"
+        }
+    ]
+}
+{% endschema %}
