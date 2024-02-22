@@ -66,10 +66,15 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "collapsible-section": {
+      "type": "collapsible-section",
+      "settings": {}
     }
   },
   "order": [
     "image_banner",
+    "collapsible-section",
     "featured_collection"
   ]
 }
