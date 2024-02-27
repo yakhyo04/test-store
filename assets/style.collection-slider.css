@@ -1,0 +1,23 @@
+.collection__slider--swiper{
+    width: 100%;
+}
+.collection__slider--image{
+    width: 100%;
+}
+.collection__slider--title{
+    color: #1A0B5B;
+    font-size: 42px;
+    text-align: center;
+}
+.collection__slider--products{
+    text-decoration: none;
+    color: #151875;
+    text-align: center;
+}
+.collection__slider--heading{
+    color: #FB2E86;
+    margin: 0;
+}
+.collection__slider--money{
+    margin: 0;
+}

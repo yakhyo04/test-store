@@ -1,0 +1,26 @@
+<ul class="header__menus">
+    {% for link in section.settings.menu.links %}
+        <li class="header__item">
+        {% if link.links != blank %}
+            <details class="header__details--item">
+                <summary class="header__summary--item">
+                    <span class="header__item--link {% if link.current %}active__link{% endif %}" href="{{ link.url }}">{{ link.title | escape }}</span>
+                    <span class="header__item--caret {% if link.current %}active__caret{% endif %}">
+                        {% render 'icon-caret' %}
+                    </span>
+                </summary>
+                <ul class="header__childlink"
+                >
+                    {% for childlink in link.links %}
+                    <li class="header__childlink--item">
+                        <a class="header__childlink--link {% if childlink.current %}active__link{% endif %}" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        {% else %}
+            <a class="header__item--link {% if link.current %}active__link{% endif %}" href="{{ link.url }}">{{ link.title | escape }}</a>
+        {% endif %}
+        </li>
+    {% endfor %}
+</ul>

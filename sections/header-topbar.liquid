@@ -5,19 +5,19 @@
                 <div>
                     {% if section.settings.email %}
                         {% render 'icon-email' %}
-                        <span>{{ section.settings.email }}</span>
+                        <span class="header__topbar--span">{{ section.settings.email }}</span>
                     {% endif %}
                 </div>
                 <div>
                     {% if section.settings.number %}
                         {% render 'icon-number' %}
-                        <span>{{ section.settings.number }}</span>
+                        <span class="header__topbar--span">{{ section.settings.number }}</span>
                     {% endif %}
                 </div>
             </div>
             <div class="header__topbar--right">
-                <span class="header__topbar--link">{{ section.settings.language }} {% render 'icon-bottom' %}</span>
-                <span class="header__topbar--link">{{ section.settings.currency }} {% render 'icon-bottom' %}</span>
+                <span class="header__topbar--link header__topbar--span">{{ section.settings.language }} {% render 'icon-bottom' %}</span>
+                <span class="header__topbar--link header__topbar--span">{{ section.settings.currency }} {% render 'icon-bottom' %}</span>
                 <a class="header__topbar--link" href="{{ routes.account_url }}">
                     {{ section.settings.login }}
                     {% render 'icon-login' %}
@@ -39,6 +39,10 @@
         background-color: {{ section.settings.background_color }};
         color: {{ section.settings.color }};
         padding: 13px 0;
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
     }
     .header__topbar--wrapper{
         display: flex;
@@ -69,6 +73,15 @@
         align-items: center;
         gap: 3px;
         font-size: 16px;
+    }
+
+    @media (max-width: 800px){
+        .header__topbar--span{
+            display: none;
+        }
+        .header__topbar--left{
+            gap: 18px;
+        }
     }
 </style>
 
