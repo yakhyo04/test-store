@@ -1,20 +1,25 @@
-{{ 'style.promotion.css' | asset_url | stylesheet_tag }}
+{{ 'promotion.min.css' | asset_url | stylesheet_tag }}
 {{ "https://unpkg.com/swiper/swiper-bundle.min.css" | stylesheet_tag }}
 {{ "https://unpkg.com/swiper/swiper-bundle.min.js" | script_tag }}
 
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
 {% for block in section.blocks %}
-<div class="promotion swiper-slide" style="background-image: url({{ block.settings.image | image_url }});">
-    <div class="page-width">
+    {% assign image = block.settings.image %}
+<div class="promotion swiper-slide">
+<img class="promotion__image promotion__desktop--image" src="{{ image | image_url }}" alt="{{ block.settings.title }}">
+<img class="promotion__image promotion__mobile--image" src="{{ block.settings.mobile_image | image_url }}" alt="{{ block.settings.title }}">
+    <div class="promotion__container">
+        <div class="page-width">
         <div class="promotion__wrapper">
-            <div class="promotion__left">
+            <div class="promotion__left" >
                 <p class="promotion__subtitle" style="color: {{ block.settings.color }};">{{ block.settings.subtitle }}</p>
                 <h1 class="promotion__title">{{ block.settings.title }}</h1>
                 <p class="promotion__description">{{ block.settings.description }}</p>
                 <a style="background-color: {{ block.settings.bg_color }}; color: {{ block.settings.button_color }};" href="{{ block.settings.button_link }}" class="promotion__button">{{ block.settings.button_title }}</a>
             </div>
         </div>
+    </div>
     </div>
 </div>
 {% endfor %}
@@ -94,6 +99,11 @@
                     "type": "image_picker",
                     "id": "image",
                     "label": "Pick an image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "mobile_image",
+                    "label": "Image for mobile"
                 }
             ]
         }

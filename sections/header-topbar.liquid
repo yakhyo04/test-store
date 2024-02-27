@@ -1,19 +1,20 @@
 <div class="header__topbar">
+    <div class="header__topbar--fixed">
     <div class="page-width">
         <div class="header__topbar--wrapper">
             <div class="header__topbar--left">
-                <div>
-                    {% if section.settings.email %}
+                {% if section.settings.email %}
+                    <a href="mailto: {{ section.settings.email }}">
                         {% render 'icon-email' %}
                         <span class="header__topbar--span">{{ section.settings.email }}</span>
-                    {% endif %}
-                </div>
-                <div>
-                    {% if section.settings.number %}
+                    </a>
+                {% endif %}
+                {% if section.settings.number %}
+                    <a href="tel: {{ section.settings.number }}">
                         {% render 'icon-number' %}
-                        <span class="header__topbar--span">{{ section.settings.number }}</span>
-                    {% endif %}
-                </div>
+                        <span class="header__topbar--span">{{ section.settings.number_title }}</span>
+                    </a>
+                {% endif %}
             </div>
             <div class="header__topbar--right">
                 <span class="header__topbar--link header__topbar--span">{{ section.settings.language }} {% render 'icon-bottom' %}</span>
@@ -32,9 +33,13 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
 
 <style>
+    .header-topbar{
+        z-index: 10;
+    }
     .header__topbar{
         background-color: {{ section.settings.background_color }};
         color: {{ section.settings.color }};
@@ -43,19 +48,36 @@
         top: 0;
         left: 0;
         right: 0;
+        height: 44px;
+    }
+    .header__topbar svg{
+        width: 20px;
+        height: 20px;
     }
     .header__topbar--wrapper{
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
+        height: 44px;
+    }
+    .header__topbar--fixed{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 44px;
+        background-color: {{ section.settings.background_color }};
+        color: {{ section.settings.color }};
     }
     .header__topbar--left{
         display: flex;
         gap: 48px;
         align-items: center;
     }
-    .header__topbar--left div{
+    .header__topbar--left a{
+        color: {{ section.settings.color }};
+        text-decoration: none;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -82,12 +104,17 @@
         .header__topbar--left{
             gap: 18px;
         }
+        .header__topbar svg{
+            width: 25px;
+            height: 25px;
+        }
     }
 </style>
 
 {% schema %}
 {
     "name": "Header topbar",
+    "class": "header-topbar",
     "settings": [
         {
             "type": "text",
@@ -96,10 +123,16 @@
             "label": "Email"
         },
         {
-            "type": "text",
+            "type": "number",
             "id": "number",
-            "default": "(998)901234567",
+            "default": 998901234567,
             "label": "Phone number"
+        },
+        {
+            "type": "text",
+            "id": "number_title",
+            "default": "(998)901234567",
+            "label": "Phone number title"
         },
         {
             "type": "color",

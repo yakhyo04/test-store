@@ -6,13 +6,13 @@
       "type": "header-topbar",
       "settings": {}
     },
-    "header2": {
-      "type": "header2",
+    "header": {
+      "type": "header",
       "settings": {}
     }
   },
   "order": [
     "header-topbar",
-    "header2"
+    "header"
   ]
 }

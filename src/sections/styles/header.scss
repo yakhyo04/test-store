@@ -5,12 +5,22 @@
     left: 0;
     right: 0;
     padding: 19px 0;
+    height: 70px;
 }
 .header__wrapper{
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    height: 70px;
+}
+.header__position--fixed{
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: #fff;
+    height: 70px;
+    top: 44px;
 }
 .header__search--icon{
     background-color: #FB2E86;
@@ -98,13 +108,14 @@ details[open]>.header__summary--item .icon-caret{
 .header__mobile--drawer{
     position: fixed;
     width: 100%;
-    top: 132px;
+    top: 110px;
     overflow-x: hidden;
     right: 0;
     left: 0;
     bottom: 0;
     background-color: #242833;
     color: #fff;
+    z-index: 1;
 }
 .header__mobile--link{
     color: #fff;
