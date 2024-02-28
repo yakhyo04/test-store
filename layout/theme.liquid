@@ -87,6 +87,13 @@
         --color-badge-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
         --color-badge-border: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
         --payment-terms-background-color: rgb({{ scheme.settings.background.rgb }});
+        --color-background-color: {{ scheme.settings.background_color }};
+        --color-text-color: {{ scheme.settings.text_color }};
+        --color-primary-color: {{ scheme.settings.primary_color }};
+        --color-secondary-color: {{ scheme.settings.secondary_color }};
+        --color-light-color: {{ scheme.settings.light_color }};
+        --color-dark-color: {{ scheme.settings.dark_color }};
+        --color-midnight-color: {{ scheme.settings.midnight_color }}
       }
       {% endfor %}
 
@@ -252,6 +259,7 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'global.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>

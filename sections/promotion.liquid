@@ -2,7 +2,7 @@
 {{ "https://unpkg.com/swiper/swiper-bundle.min.css" | stylesheet_tag }}
 {{ "https://unpkg.com/swiper/swiper-bundle.min.js" | script_tag }}
 
-<div class="swiper mySwiper">
+<div class="swiper mySwiper color-{{ section.settings.color_scheme }}">
     <div class="swiper-wrapper">
 {% for block in section.blocks %}
     {% assign image = block.settings.image %}
@@ -13,10 +13,10 @@
         <div class="page-width">
         <div class="promotion__wrapper">
             <div class="promotion__left" >
-                <p class="promotion__subtitle" style="color: {{ block.settings.color }};">{{ block.settings.subtitle }}</p>
+                <p class="promotion__subtitle">{{ block.settings.subtitle }}</p>
                 <h1 class="promotion__title">{{ block.settings.title }}</h1>
                 <p class="promotion__description">{{ block.settings.description }}</p>
-                <a style="background-color: {{ block.settings.bg_color }}; color: {{ block.settings.button_color }};" href="{{ block.settings.button_link }}" class="promotion__button">{{ block.settings.button_title }}</a>
+                <a href="{{ block.settings.button_link }}" class="promotion__button">{{ block.settings.button_title }}</a>
             </div>
         </div>
     </div>
@@ -42,6 +42,14 @@
 {% schema %}
 {
     "name": "Promotion",
+    "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-4"
+        }
+    ],
     "blocks": [
         {
             "type": "Promotion_Blocks",
