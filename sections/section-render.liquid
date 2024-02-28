@@ -1,0 +1,48 @@
+{{ 'collapsible.css' | asset_url | stylesheet_tag }}
+{{ 'collapsible.js' | asset_url | script_tag }}
+{{ 'component-loading-spinner.css' | asset_url | stylesheet_tag }}
+
+<div class="section-render shopify-section" id="shopify-section-{{ section.id }}" data-section="accordion">
+    <div class="accordion" id="accordion__container">
+        <expended-accordion>
+            <div class="accordion-item-header" data-component="header">
+                Hello World
+            </div>
+            <div class="accordion-item-body collapse" data-body="header">
+                <div class="accordion-item-body-content">
+                    <div>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, ad.
+                    </div>
+                </div>
+            </div>
+        </expended-accordion>
+        <expended-accordion>
+            <div class="accordion-item-header" data-component="header">
+                Lorem Ipsum Dolor
+            </div>
+            <div class="accordion-item-body collapse" data-body="header">
+                <div class="accordion-item-body-content">
+                    <div>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, ad.
+                    </div>
+                </div>
+            </div>
+        </expended-accordion>
+    </div>
+    <div id="loader">
+        <div class="loading__spinner">
+        <svg
+            aria-hidden="true"
+            focusable="false"
+            class="spinner"
+            viewBox="0 0 66 66"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+        </svg>
+        </div>
+    </div>
+    <button class="button accordion__button">Load more</button>
+</div>
+
+{{ 'section-render.js' | asset_url | script_tag }}
