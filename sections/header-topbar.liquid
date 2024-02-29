@@ -17,19 +17,7 @@
                 {% endif %}
             </div>
             <div class="header__topbar--right">
-                <span class="header__topbar--link header__topbar--span">{{ section.settings.language }} {% render 'icon-bottom' %}</span>
-                <span class="header__topbar--link header__topbar--span">{{ section.settings.currency }} {% render 'icon-bottom' %}</span>
-                <a class="header__topbar--link" href="{{ routes.account_url }}">
-                    {{ section.settings.login }}
-                    {% render 'icon-login' %}
-                </a>
-                <a class="header__topbar--link" href="/pages/wishlist">
-                    {{ section.settings.wishlist }}
-                    {% render 'icon-wishlist' %}
-                </a>
-                <a class="header__topbar--link header__topbar--cart" href="{{ routes.cart_url }}">
-                    {% render 'icon_cart' %}
-                </a>
+                <span class="header__topbar--link">9 AM - 10 PM</span>
             </div>
         </div>
     </div>
@@ -155,30 +143,6 @@
             "id": "color",
             "default": "#fff",
             "label": "Color"
-        },
-        {
-            "type": "text",
-            "id": "login",
-            "default": "Login",
-            "label": "Login text"
-        },
-        {
-            "type": "text",
-            "id": "wishlist",
-            "default": "Wishlist",
-            "label": "Wishlist text"
-        },
-        {
-            "type": "text",
-            "id": "language",
-            "default": "English",
-            "label": "Language"
-        },
-        {
-            "type": "text",
-            "id": "currency",
-            "default": "USD",
-            "label": "Currency"
         }
     ]
 }
