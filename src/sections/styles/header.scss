@@ -23,10 +23,11 @@
     top: 44px;
 }
 .header__search--icon{
-    background-color: var(--color-secondary-color);
+    // background-color: var(--color-secondary-color);
+    background: transparent;
     border: none;
     height: 100%;
-    padding: 8px 13px;
+    // padding: 8px 13px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +81,32 @@
     right: 0;
     top: -1px;
     color: var(--color-primary-color);
+}
+.header__right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    svg{
+        color: #242833;
+        fill: #242833;
+        width: 20px;
+        height: 20px;
+    }
+    path{
+        color: #242833;
+        fill: #242833;
+    }
+}
+.header__right--cart svg{
+    width: 24px;
+    height: 24px;
+}
+.header__right--link{
+    text-decoration: none;
+    color: var(--color-dark-color);
+    display: flex;
+    align-items: center;
 }
 .active__caret .icon-caret{
     color: var(--color-secondary-color);

@@ -32,14 +32,29 @@
 
             {% render 'header2-dropdown-menu' %}
 
-            {% if section.settings.show_search %}
+            <div class="header__right" style="display: flex; align-items: center; gap: 10px;">
+                <a class="header__right--link" href="{{ routes.account_url }}">
+                    {% render 'icon-login' %}
+                </a>
+                <a class="header__right--link" href="/pages/wishlist">
+                    {% render 'icon-wishlist' %}
+                </a>
+                <a class="header__right--link header__right--cart" href="{{ routes.cart_url }}">
+                    {% render 'icon_cart' %}
+                </a>
+                <button class="header__search--icon" type="submit">
+                    {% render 'icon-search' %}
+                </button>
+            </div>
+
+            {% comment %} {% if section.settings.show_search %}
             <form action="{{ routes.search_url }}" class="header__search--form">
                 <input class="header__search--input" type="search" name="q">
                 <button class="header__search--icon" type="submit">
                     {% render 'icon-search' %}
                 </button>
             </form>
-            {% endif %}
+            {% endif %} {% endcomment %}
         </div>
     </div>
     </div>
