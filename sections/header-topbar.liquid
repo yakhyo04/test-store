@@ -1,23 +1,23 @@
-<div class="header__topbar color-{{ section.settings.color_scheme }}">
+<div class="header__topbar font__secondary color-{{ section.settings.color_scheme }}">
     <div class="header__topbar--fixed">
     <div class="page-width">
         <div class="header__topbar--wrapper">
             <div class="header__topbar--left">
                 {% if section.settings.email %}
                     <a href="mailto: {{ section.settings.email }}">
-                        {% render 'icon-email' %}
+                        {% render 'icon' with 'email' %}
                         <span class="header__topbar--span">{{ section.settings.email }}</span>
                     </a>
                 {% endif %}
                 {% if section.settings.number %}
                     <a href="tel: {{ section.settings.number }}">
-                        {% render 'icon-number' %}
+                        {% render 'icon' with 'number' %}
                         <span class="header__topbar--span">{{ section.settings.number_title }}</span>
                     </a>
                 {% endif %}
             </div>
             <div class="header__topbar--right">
-                <span class="header__topbar--link">9 AM - 10 PM</span>
+                <span class="header__topbar--link">{{ section.settings.working_hour }}</span>
             </div>
         </div>
     </div>
@@ -26,12 +26,12 @@
 
 <style>
     .header-topbar{
-        z-index: 10;
+        z-index: auto;
     }
     .header__topbar{
         background-color: var(--color-background-color);
         color: var(--color-text-color);
-        padding: 13px 0;
+        /* padding: 13px 0; */
         position: sticky;
         top: 0;
         left: 0;
@@ -49,7 +49,7 @@
         flex-wrap: wrap;
         height: 44px;
     }
-    .header__topbar--fixed{
+    /* .header__topbar--fixed{
         position: fixed;
         top: 0;
         left: 0;
@@ -57,7 +57,7 @@
         height: 44px;
         background-color: var(--color-background-color);
         color: var(--color-text-color);
-    }
+    } */
     .header__topbar--left{
         display: flex;
         gap: 48px;
@@ -143,6 +143,12 @@
             "id": "color",
             "default": "#fff",
             "label": "Color"
+        },
+        {
+            "type": "text",
+            "id": "working_hour",
+            "default": "9:00 AM - 10:00 PM",
+            "label": "Working Hours"
         }
     ]
 }
