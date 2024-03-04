@@ -30,10 +30,21 @@
                 </a>
                 {% if section.settings.show_search %}
                 <form action="{{ routes.search_url }}">
-                    {% comment %} <input class="header__search--input" type="search" name="q"> {% endcomment %}
-                    <button class="header__search--icon" type="submit">
-                        {% render 'icon-search' %}
-                    </button>
+                    <span class="header__right--link header__search">
+                        {% render 'icon' with 'search' %}
+                    </span>
+                    <div class="header__mobile--overlay"></div>
+                    <div class="header__search--wrapper page-width">
+                      <div class="header__input--wrapper">
+                        <input class="header__search--input" type="search" name="q">
+                        <button class="header__search--icon" type="submit">
+                            {% render 'icon' with 'search' %}
+                        </button>
+                      </div>
+                      <span class="header__search--close">
+                        {% render 'icon' with 'close' %}
+                      </span>
+                    </div>
                 </form>
                 {% endif %}
             </div>
