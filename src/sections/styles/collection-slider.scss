@@ -16,6 +16,9 @@
 .collection__slider--pagination{
     bottom: -7px !important;
 }
+.collection__slider--pagination{
+    position: relative;
+}
 .collection__slider--swiper .swiper-pagination-bullet{
     border-radius: 10px !important;
     height: 4px !important;
