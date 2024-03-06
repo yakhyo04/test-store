@@ -1,0 +1,22 @@
+<div class="header__mobile--details">
+    <div class="header__mobile--summary">
+        <span class="header__icon--hamburger">
+            {% render 'icon' with "hamburger" %}
+        </span>
+    </div>
+    {% comment %} <div class="header__mobile--overlay"></div> {% endcomment %}
+    <div class="header__mobile--drawer">
+        <div class="header__mobile--container">
+            <ul class="header__mobile--menu">
+                <span class="header__icon--close">
+                    {% render 'icon' with "close" %}
+                </span>
+                {% for link in section.settings.menu.links %}
+                    <li class="header__mobile--item">
+                        <a href="{{ link.url }}" class="header__mobile--link {% if link.current %}active__link{% endif %}">{{ link.title | escape }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,17 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
+    {% comment %} Josefin Sans {% endcomment %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+    {% comment %} Lato {% endcomment %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
@@ -114,6 +125,27 @@
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+          .font__primary{
+            font-family: 'Lato', sans-serif;
+          }
+          
+          .font__secondary{
+            font-family: 'Josefin Sans', sans-serif;
+          }
+          
+          
+          --font-primary-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+          --font-primary-style: {{ settings.type_body_font.style }};
+          --font-primary-weight: {{ settings.type_body_font.weight }};
+          --font-primary-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+          --font-primary-scale: {{ settings.body_scale |  divided_by: 100.0 }};
+        --font-secondary-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-secondary-style: {{ settings.type_header_font.style }};
+        --font-secondary-weight: {{ settings.type_header_font.weight }};
+        --font-secondary-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+        
+
 
         --media-padding: {{ settings.media_padding }}px;
         --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};

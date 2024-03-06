@@ -9,10 +9,15 @@
     "header": {
       "type": "header",
       "settings": {}
+    },
+    "header_old": {
+      "type": "header_old",
+      "settings": {}
     }
   },
   "order": [
     "header-topbar",
-    "header"
+    "header",
+    "header_old"
   ]
 }
