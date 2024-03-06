@@ -4,10 +4,11 @@
 .mySwiper {
   width: 100% !important;
   height: 100% !important;
+  background: var(--color-text-color) !important;
 }
 
 .mySwiper .swiper-pagination-bullet-active {
-  background: #FB2E86 !important;
+  background: var(--color-secondary-color) !important;
 }
 
 .mySwiper .swiper-pagination-bullet {
@@ -41,13 +42,18 @@
 .promotion__subtitle {
   font-size: 16px;
   font-weight: 700;
-  color: #8A8FB9;
+  color: var(--color-light-color);
   margin: 0 0 12px 0;
+}
+
+.promotion__subtitle {
+  color: var(--color-secondary-color);
 }
 
 .promotion__title {
   font-size: 40px;
   margin: 0;
+  color: var(--color-dark-color);
 }
 
 .promotion__button {
@@ -55,10 +61,12 @@
   border-radius: 2px;
   display: inline-block;
   text-decoration: none;
+  background-color: var(--color-secondary-color);
+  color: var(--color-text-color);
 }
 
 .promotion__left {
-  width: 42%;
+  width: 45%;
   margin-left: 130px;
 }
 

@@ -1,35 +1,23 @@
-<div class="header__topbar">
+<div class="header__topbar font__secondary color-{{ section.settings.color_scheme }}">
     <div class="header__topbar--fixed">
     <div class="page-width">
         <div class="header__topbar--wrapper">
             <div class="header__topbar--left">
                 {% if section.settings.email %}
                     <a href="mailto: {{ section.settings.email }}">
-                        {% render 'icon-email' %}
+                        {% render 'icon' with 'email' %}
                         <span class="header__topbar--span">{{ section.settings.email }}</span>
                     </a>
                 {% endif %}
                 {% if section.settings.number %}
                     <a href="tel: {{ section.settings.number }}">
-                        {% render 'icon-number' %}
+                        {% render 'icon' with 'number' %}
                         <span class="header__topbar--span">{{ section.settings.number_title }}</span>
                     </a>
                 {% endif %}
             </div>
             <div class="header__topbar--right">
-                <span class="header__topbar--link header__topbar--span">{{ section.settings.language }} {% render 'icon-bottom' %}</span>
-                <span class="header__topbar--link header__topbar--span">{{ section.settings.currency }} {% render 'icon-bottom' %}</span>
-                <a class="header__topbar--link" href="{{ routes.account_url }}">
-                    {{ section.settings.login }}
-                    {% render 'icon-login' %}
-                </a>
-                <a class="header__topbar--link" href="/pages/wishlist">
-                    {{ section.settings.wishlist }}
-                    {% render 'icon-wishlist' %}
-                </a>
-                <a class="header__topbar--link" href="{{ routes.cart_url }}">
-                    {% render 'icon_cart' %}
-                </a>
+                <span class="header__topbar--link">{{ section.settings.working_hour }}</span>
             </div>
         </div>
     </div>
@@ -38,12 +26,11 @@
 
 <style>
     .header-topbar{
-        z-index: 10;
+        z-index: auto;
     }
     .header__topbar{
-        background-color: {{ section.settings.background_color }};
-        color: {{ section.settings.color }};
-        padding: 13px 0;
+        background-color: var(--color-background-color);
+        color: var(--color-text-color);
         position: sticky;
         top: 0;
         left: 0;
@@ -61,27 +48,18 @@
         flex-wrap: wrap;
         height: 44px;
     }
-    .header__topbar--fixed{
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 44px;
-        background-color: {{ section.settings.background_color }};
-        color: {{ section.settings.color }};
-    }
     .header__topbar--left{
         display: flex;
         gap: 48px;
         align-items: center;
     }
     .header__topbar--left a{
-        color: {{ section.settings.color }};
+        color: var(--color-text-color);
         text-decoration: none;
         display: flex;
         align-items: center;
         gap: 12px;
-        font-size: 16px;
+        font-size: 14px;
     }
     .header__topbar--right{
         display: flex;
@@ -90,11 +68,15 @@
     }
     .header__topbar--link{
         text-decoration: none;
-        color: #fff;
+        color: var(--color-text-color);
         display: flex;
         align-items: center;
         gap: 3px;
-        font-size: 16px;
+        font-size: 14px;
+    }
+    .header__topbar--cart svg{
+        width: 24px;
+        height: 24px;
     }
 
     @media (max-width: 800px){
@@ -104,9 +86,12 @@
         .header__topbar--left{
             gap: 18px;
         }
-        .header__topbar svg{
-            width: 25px;
-            height: 25px;
+    }
+
+    @media (max-width: 600px){
+        .header__topbar--link,
+        .header__topbar--left a{
+            font-size: 12px;
         }
     }
 </style>
@@ -116,6 +101,12 @@
     "name": "Header topbar",
     "class": "header-topbar",
     "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-4"
+        },
         {
             "type": "text",
             "id": "email",
@@ -148,27 +139,9 @@
         },
         {
             "type": "text",
-            "id": "login",
-            "default": "Login",
-            "label": "Login text"
-        },
-        {
-            "type": "text",
-            "id": "wishlist",
-            "default": "Wishlist",
-            "label": "Wishlist text"
-        },
-        {
-            "type": "text",
-            "id": "language",
-            "default": "English",
-            "label": "Language"
-        },
-        {
-            "type": "text",
-            "id": "currency",
-            "default": "USD",
-            "label": "Currency"
+            "id": "working_hour",
+            "default": "9:00 AM - 10:00 PM",
+            "label": "Working Hours"
         }
     ]
 }

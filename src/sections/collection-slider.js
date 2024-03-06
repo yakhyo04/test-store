@@ -1,0 +1,1 @@
+import './styles/collection-slider.scss';

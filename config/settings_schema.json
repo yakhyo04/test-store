@@ -115,6 +115,49 @@
             "id": "shadow",
             "label": "t:settings_schema.colors.settings.shadow.label",
             "default": "#121212"
+          },
+
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#7E33E0"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "id": "primary_color",
+            "label": "Primary Color",
+            "default": "#0D0E43"
+          },
+          {
+            "type": "color",
+            "id": "secondary_color",
+            "label": "Secondary Color",
+            "default": "#FB2E86"
+          },
+          {
+            "type": "color",
+            "id": "light_color",
+            "label": "Light Color",
+            "default": "#8A8FB9"
+          },
+          {
+            "type": "color",
+            "id": "dark_color",
+            "label": "Dark Color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "midnight_color",
+            "label": "Midnight Color",
+            "default": "#151875"
           }
         ],
         "role": {

@@ -1,6 +1,6 @@
 {{ 'header.min.css' |  asset_url |  stylesheet_tag }}
 
-<header class="header2">
+<header class="header2 color-{{ section.settings.color_scheme }}">
     <div class="header__position--fixed">
     <div class="page-width">
         <div class="header__wrapper">
@@ -47,8 +47,14 @@
 
 {% schema %}
 {
-    "name": "Header 2",
+    "name": "Header",
     "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-4"
+        },
         {
             "type": "link_list",
             "id": "menu",

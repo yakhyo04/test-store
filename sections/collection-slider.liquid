@@ -1,21 +1,17 @@
-{{ 'style.collection-slider.css' | asset_url | stylesheet_tag }}
+{{ 'collection-slider.min.css' | asset_url | stylesheet_tag }}
 {{ "https://unpkg.com/swiper/swiper-bundle.min.css" | stylesheet_tag }}
 {{ "https://unpkg.com/swiper/swiper-bundle.min.js" | script_tag }}
 
-<div class="collection__slider">
+<div class="collection__slider color-{{ section.settings.color_scheme }}">
     <div class="page-width">
         <h1 class="collection__slider--title">{{ section.settings.title }}</h1>
         <div class="swiper collection__slider--swiper">
         <div class="collection__slider--wrapper swiper-wrapper">
             {% for product in section.settings.collection.products %}
-                <a href="{{ product.url }}" class="collection__slider--products swiper-slide">
-                    <img class="collection__slider--image" src="{{ product.featured_media | image_url }}" alt="">
-                    <h3 class="collection__slider--heading">{{ product.title }}</h3>
-                    <p class="collection__slider--money">{{ product.price | money }}</p>
-                </a>
+                {% render 'featured-product-block', product: product %}
             {% endfor %}
         </div>
-        <div class="swiper-pagination"></div>   
+        <div class="swiper-pagination" style="position: relative;"></div>   
         </div>
     </div>
 </div>
@@ -38,7 +34,7 @@
         },
         768: {
         slidesPerView: 4,
-        spaceBetween: 40,
+        spaceBetween: 20,
         }
         
     }
@@ -49,6 +45,12 @@
 {
     "name": "Collection Slider",
     "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-4"
+        },
         {
             "type": "text",
             "id": "title",
