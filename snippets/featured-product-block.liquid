@@ -1,0 +1,24 @@
+{{ 'featured-products.min.css' | asset_url | stylesheet_tag }}
+
+<a href="{{ product.url }}" class="featured__product--block swiper-slide">
+    <div class="featured__productImage--wrapper">
+        <div class="featured__icons--wrapper">
+            <span class="featured__icon">
+                {% render 'icon' with 'cart' %}
+                {% render 'icon' with 'wishlist' %}
+                {% render 'icon' with 'zoom' %}
+            </span>
+        </div>
+        <span class="featured__span">View Details</span>
+        <img class="featured__product--image" src="{{ product.featured_media | image_url }}" alt="">
+    </div>
+    <div class="featured__product--content">
+        <h3 class="featured__product--title">{{ product.title }}</h3>
+        <div class="featured__product--colors">
+        {% for variant in product.variants %}
+            <span class="featured__product--color" style="background-color: {{ variant.title | downcase }};"></span>
+        {% endfor %}
+        </div>
+        <p class="featured__product--money">{{ product.price | money }}</p>
+    </div>
+</a>
