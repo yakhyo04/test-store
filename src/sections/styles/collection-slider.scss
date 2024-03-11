@@ -1,6 +1,6 @@
 .collection__slider--swiper{
     width: 100%;
-    height: 330px;
+    height: 390px;
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -20,6 +20,9 @@
 .collection__slider--pagination{
     position: relative;
 }
+.collection__slider--swiper {
+    padding: 0 12px !important;
+}
 .collection__slider--swiper .swiper-pagination-bullet{
     border-radius: 10px !important;
     height: 4px !important;
@@ -31,12 +34,18 @@
     width: 24px !important;
 }
 
+@media (max-width: 1120px){
+    .collection__slider--swiper{
+        height: 400px;
+    }
+}
+
 @media (max-width: 600px){
     .collection__slider{
         padding-top: 50px;
     }
     .collection__slider--swiper{
-        height: 300px;
+        height: 350px;
     }
     .collection__slider--title{
         font-size: 30px;
