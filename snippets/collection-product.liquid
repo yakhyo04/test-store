@@ -1,0 +1,19 @@
+<a href="{{ product.url }}" class="collection__product">
+    <div class="collection__productImage--wrapper">
+        <div class="collection__product--icons">
+            {% render 'icon' with 'cart' %}
+            {% render 'icon' with 'zoom' %}
+            {% render 'icon' with 'wishlist' %}
+        </div>
+        <img class="collection__product--image" src="{{ product.featured_media | image_url: width: 200, height: 200 }}" alt="{{ product.title | escape }}">
+    </div>
+    <div class="collection__product--content">
+        <h3 class="collection__product--title">{{ product.title | truncate: 20 }}</h3>
+        <div class="collection__product--colors">
+            {% for variant in product.variants %}
+                <span class="collection__product--color" style="background-color: {{ variant.title | downcase }}; color: {{ variant.title | downcase }};">.</span>
+            {% endfor %}
+        </div>
+        <p class="collection__product--price">{{ product.price | money }}</p>
+    </div>
+</a>

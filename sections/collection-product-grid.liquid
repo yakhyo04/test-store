@@ -1,0 +1,47 @@
+{{ 'collection.min.css' | asset_url | stylesheet_tag }}
+{{ 'collection.min.js' | asset_url | script_tag }}
+
+<div class="collection section-{{ section.id }}">
+    <div class="page-width">
+        <div class="collection__navbar">
+            <div class="collection__content">
+                <h2 class="collection__content--heading">Ecommerce Acceories & Fashion item </h2>
+                <p class="collection__content--text">About 9,620 results (0.62 seconds)</p>
+            </div>
+            <div class="collection__filter">
+                <div class="collection__filter--div">
+                    <span class="collection__filter--span">Per Page: </span>
+                    <input class="collection__filter--input" type="number">
+                </div>
+                <div class="collection__filter--div">
+                    <span class="collection__filter--span">
+                        <label for="SortBy">Sort By: </label>
+                    </span>
+                    {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+                    <select class="collection__filter--select" name="sort_by" id="SortBy">
+                        {%- for option in collection.sort_options -%}
+                            <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+                        {%- endfor -%}
+                    </select>
+                </div>
+                <div class="collection__filter--div collection__filter--view">
+                    <span class="collection__filter--span">View: </span>
+                    {% render 'icon' with 'grid' %}
+                    {% render 'icon' with 'list' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="collection__filters">
+            {% render 'collection-filters', results: collection %}
+        </div>
+
+        <div class="collection__grid">
+            <div class="collection__grid--wrapper" id="CollectionGrid">
+                {% for product in collection.products %}
+                    {% render 'collection-product', product: product %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
