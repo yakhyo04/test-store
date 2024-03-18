@@ -1,0 +1,131 @@
+{{ 'promotion.min.css' | asset_url | stylesheet_tag }}
+{{ 'promotion.min.js' | asset_url |  script_tag }}
+{{ "https://unpkg.com/swiper/swiper-bundle.min.css" | stylesheet_tag }}
+{{ "https://unpkg.com/swiper/swiper-bundle.min.js" | script_tag }}
+
+<div class="swiper mySwiper color-{{ section.settings.color_scheme }}">
+    <div class="swiper-wrapper">
+{% for block in section.blocks %}
+    {% assign image = block.settings.image %}
+<div class="promotion swiper-slide">
+<img class="promotion__image promotion__desktop--image" src="{{ image | image_url }}" alt="{{ block.settings.title }}">
+<img class="promotion__image promotion__mobile--image" src="{{ block.settings.mobile_image | image_url }}" alt="{{ block.settings.title }}">
+    <div class="promotion__container">
+        <div class="page-width">
+        <div class="promotion__wrapper">
+            <div class="promotion__left" >
+                <p class="promotion__subtitle">{{ block.settings.subtitle }}</p>
+                <h1 class="promotion__title">{{ block.settings.title }}</h1>
+                <p class="promotion__description">{{ block.settings.description }}</p>
+                <a href="{{ block.settings.button_link }}" class="promotion__button">{{ block.settings.button_title }}</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+<div class="swiper-pagination"></div>
+</div>
+
+<script>
+var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 18,
+    direction: 'horizontal',
+    pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+    }
+});
+</script>
+
+{% schema %}
+{
+    "name": "Promotion",
+    "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-4"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Promotion_Blocks",
+            "name": "Promotion Blocks",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "subtitle",
+                    "default": "lorem ipsum dolor",
+                    "label": "Subtitle"
+                },
+                {
+                    "type": "color",
+                    "id": "color",
+                    "default": "#222",
+                    "label": "Subtitle color"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "default": "Lorem Ipsum",
+                    "label": "Title"
+                },
+                {
+                    "type": "text",
+                    "id": "description",
+                    "default": "lorem ipsum dolor",
+                    "label": "Description"
+                },
+                {
+                    "type": "text",
+                    "id": "button_title",
+                    "default": "Click",
+                    "label": "Button title"
+                },
+                {
+                    "type": "url",
+                    "id": "button_link",
+                    "default": "/",
+                    "label": "Button Link"
+                },
+                {
+                    "type": "color",
+                    "id": "bg_color",
+                    "default": "#000",
+                    "label": "Button Bg Color"
+                },
+                {
+                    "type": "color",
+                    "id": "button_color",
+                    "default": "#fff",
+                    "label": "Button Color"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Pick an image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "mobile_image",
+                    "label": "Image for mobile"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Promotion Section",
+            "blocks": [
+                {
+                    "type": "Promotion_Blocks"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
