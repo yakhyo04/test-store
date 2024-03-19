@@ -18,6 +18,26 @@
   height: 70px;
 }
 
+.header__right--cart {
+  position: relative;
+}
+
+.header__cart--count {
+  background: var(--color-secondary-color);
+  color: var(--color-text-color);
+  border-radius: 50%;
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 17px;
+  height: 17px;
+}
+
 .header__search--icon {
   background: transparent;
   border: none;

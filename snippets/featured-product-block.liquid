@@ -1,10 +1,16 @@
 {{ 'featured-products.min.css' | asset_url | stylesheet_tag }}
+{{ 'collection-slider.min.js' | asset_url | script_tag }}
 
 <a href="{{ product.url }}" class="featured__product--block swiper-slide">
     <div class="featured__productImage--wrapper">
         <div class="featured__icons--wrapper">
             <span class="featured__icon">
-                {% render 'icon' with 'cart' %}
+                <form class="featured__form" method="post" action="/cart/add">
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                    <button type="submit" class="featured__button" id="{{ cart.item_count }}" value="{{ product.variants.first.id }}">
+                        {% render 'icon' with 'cart' %}
+                    </button>
+                </form>
                 {% render 'icon' with 'wishlist' %}
                 {% render 'icon' with 'zoom' %}
             </span>
@@ -13,10 +19,12 @@
         <img class="featured__product--image" src="{{ product.featured_media | image_url }}" alt="">
     </div>
     <div class="featured__product--content">
-        <h3 class="featured__product--title">{{ product.title }}</h3>
+        <h3 class="featured__product--title">{{ product.title |  truncate: 20 }}</h3>
         <div class="featured__product--colors">
         {% for variant in product.variants %}
-            <span class="featured__product--color" style="background-color: {{ variant.title | downcase }};"></span>
+            {% if variant.metafields.custom.colors %}
+                <span class="featured__product--color" style="background-color: {{ variant.metafields.custom.colors }};"></span>
+            {% endif %}
         {% endfor %}
         </div>
         <p class="featured__product--money">{{ product.price | money }}</p>
