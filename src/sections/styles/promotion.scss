@@ -9,6 +9,8 @@
 .mySwiper .swiper-pagination-bullet{
     transform: rotateY(0deg) rotate(45deg) !important;
     border-radius: 0 !important;
+    border: 1px solid var(--color-secondary-color);
+    background-color: #fff;
 }
 .promotion{
     background: #F2F0FF;
