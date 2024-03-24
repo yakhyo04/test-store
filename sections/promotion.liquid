@@ -6,8 +6,13 @@
         {% for block in section.blocks %}
             {% assign image = block.settings.image %}
             <div class="promotion swiper-slide">
-                <img class="promotion__image promotion__desktop--image" src="{{ image | image_url }}" alt="{{ block.settings.title }}">
-                <img class="promotion__image promotion__mobile--image" src="{{ block.settings.mobile_image | image_url }}" alt="{{ block.settings.title }}">
+                <picture>
+                    <source
+                        srcset="{{ block.settings.mobile_image | image_url }}"
+                        media="(max-width: 599.99px)"
+                    >
+                    <img class="promotion__image promotion__desktop--image" src="{{ image | image_url }}" alt="{{ block.settings.title }}">
+                </picture>
                 <div class="promotion__container">
                     <div class="page-width">
                         <div class="promotion__wrapper">

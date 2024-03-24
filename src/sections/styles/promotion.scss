@@ -78,9 +78,6 @@
     object-fit: cover; 
     z-index: -1;
 }
-.promotion__mobile--image{
-    display: none;
-}
 
 @media (max-width: 1200px){
     .promotion__left{
@@ -110,12 +107,6 @@
 }
 
 @media (max-width: 640px){
-    .promotion__desktop--image{
-        display: none;
-    }
-    .promotion__mobile--image{
-        display: block;
-    }
     .promotion__left{
         margin-top: 20%;
     }
