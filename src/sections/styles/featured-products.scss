@@ -21,8 +21,17 @@
     color: var(--color-secondary-color);
     margin: 0;
 }
+.featured__product--money--wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .featured__product--money{
     margin: 0;
+}
+.featured__product--compare--money{
+    color: red;
+    text-decoration: line-through;
 }
 .featured__product--block{
     text-decoration: none;
@@ -105,6 +114,9 @@
 .featured__product--block:hover .featured__icons--wrapper,
 .featured__product--block:hover .featured__span{
     display: block;
+}
+.featured__product--block:hover .featured__productImage--wrapper{
+    background-color: #e7e8eb;
 }
 .featured__product--colors{
     display: flex;

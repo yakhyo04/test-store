@@ -27,6 +27,11 @@
             {% endif %}
         {% endfor %}
         </div>
-        <p class="featured__product--money">{{ product.price | money }}</p>
+        <div class="featured__product--money--wrapper">
+            <p class="featured__product--money">{{ product.price | money }}</p>
+            {% if product.compare_at_price > product.price %}
+                <p class="featured__product--money featured__product--compare--money">{{ product.compare_at_price | money }}</p>
+            {% endif %}
+        </div>
     </div>
 </a>
