@@ -1,0 +1,87 @@
+{{ 'cart-drawer.min.css' | asset_url | stylesheet_tag }}
+{{ 'cart-drawer.min.js' | asset_url | script_tag }}
+
+<div class="cart__drawer">
+  <div class="cart__drawer-box">
+    <header class="cart__drawer-header">
+      <h2>Your cart</h2>
+
+      <div class="cart__drawer-header-right">
+        <span class="cart__drawer-header-right-items">{{ cart.item_count }} items</span>
+
+        <button class="cart__drawer-header-right-close drawer-button" type="button">
+          x
+        </button>
+      </div>
+    </header>
+
+    <script>
+      localStorage.setItem("cartDrawerId", "{{ section.id }}")
+    </script>
+
+    {% form 'cart', cart, class: 'cart__drawer-form' %}
+      {% if cart.item_count == 0 %}
+        <p class="cart__drawer-empty">Your cart is empty</p>
+      {% else %}
+        <div class="cart__drawer-items">
+          {% for item in cart.items %}
+            <div class="cart__drawer-item" data-line-item-key="{{ item.key }}">
+              <div class="cart__drawer-item-image">
+                <img src="{{ item.image | img_url: '200x' }}" alt="{{ item.title }}">
+              </div>
+              <div class="cart__drawer-item-main">
+                <div class="cart__drawer-item-main-flex">
+                  <div class="cart__drawer-item-main-flex-left">
+                    <h3>
+                      <a href="{{ item.url }}">{{ item.product.title }}</a>
+                    </h3>
+                    <span>{{ item.variant.title }}</span>
+                    <div class="cart__drawer-quantity-selector">
+                      <button class="cart__drawer-quantity-selector-minus drawer-button" type="button">-</button>
+                      <input
+                        type="text"
+                        readonly
+                        value="{{ item.quantity }}"
+                        style="margin: 0; padding: 0; height: 25px;">
+                      <button class="cart__drawer-quantity-selector-plus drawer-button" type="button">+</button>
+                    </div>
+                  </div>
+                  <div class="cart__drawer-item-main-flex-right">
+                    <span>{{ item.final_line_price | money }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <footer class="cart__drawer-footer">
+          {% if cart.total_discounts > 0 %}
+            <div class="cart__drawer-footer-row">
+              <h3>Discounts</h3>
+              <span>{{ cart.total_discounts | money }}</span>
+            </div>
+          {% endif %}
+          <div class="cart__drawer-footer-row">
+            <h3>Subtotal</h3>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <a
+            href="/cart"
+            class="cart__drawer-button drawer-button"
+            style="text-align: center; color: #fff; margin-bottom: 20px;">Cart</a>
+          <button
+            type="submit"
+            name="checkout"
+            class="cart__drawer-button checkout-button button full accent drawer-button">Checkout</button>
+        </footer>
+      {% endif %}
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Cart drawer"
+  }
+{% endschema %}

@@ -1,7 +1,11 @@
 <a href="{{ product.url }}" class="collection__product">
     <div class="collection__productImage--wrapper">
         <div class="collection__product--icons">
-            {% render 'icon' with 'cart' %}
+            <add-to-cart class="collection__form" data-component='add-to-cart' data-id="{{ product.variants.first.id }}">
+                <button type="submit" data-item="button" class="collection__button">
+                    {% render 'icon' with 'cart' %}
+                </button>
+            </add-to-cart>
             {% render 'icon' with 'zoom' %}
             {% render 'icon' with 'wishlist' %}
         </div>
@@ -11,9 +15,14 @@
         <h3 class="collection__product--title">{{ product.title | truncate: 20 }}</h3>
         <div class="collection__product--colors">
             {% for variant in product.variants %}
-                <span class="collection__product--color" style="background-color: {{ variant.title | downcase }}; color: {{ variant.title | downcase }};">.</span>
+                <span class="collection__product--color" style="background-color: {{ variant.metafields.custom.colors }}; color: {{ variant.metafields.custom.colors }};">.</span>
             {% endfor %}
         </div>
-        <p class="collection__product--price">{{ product.price | money }}</p>
+        <div class="collection__price--wrapper">
+            <p class="collection__product--price">{{ product.price | money }}</p>
+            {% if product.compare_at_price > product.price %}
+                <p class="collection__product--price collection__compare--price">{{ product.compare_at_price | money }}</p>
+            {% endif %}
+        </div>
     </div>
 </a>

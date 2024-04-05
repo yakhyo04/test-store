@@ -1,23 +1,11 @@
-<form>
+<form class="collection__filter--form">
   {%- for filter in collection.filters -%}
-    <details>
-      <summary>
-        <div>
-          <span>{{ filter.label }}</span>
-
-          {%- if filter.active_values.size > 0 -%}
-            <span>({{ filter.active_values.size }})</span>
-          {%- endif -%}
-        </div>
-      </summary>
+    <div>
+      <div>
+          <span class="collection__filter--title font__secondary">{{ filter.label }}</span>
+      </div>
 
       <div>
-        <div>
-          <p>{{ filter.active_values.size }} selected</p>
-          {%- if filter.active_values.size > 0 -%}
-            <p><a href="{{ filter.url_to_remove }}">Reset</a></p>
-          {%- endif -%}
-        </div>
         {%- case filter.type -%}
           {%- when 'boolean' -%}
             <ul class="boolean">
@@ -47,7 +35,7 @@
               <input type="submit" value="Apply">
             </div>
           {%- when 'list' -%}
-            <ul class="list">
+            <ul class="list font__primary">
               {%- for filter_value in filter.values -%}
                 <li class="collectionFilter">
                   <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
@@ -100,31 +88,23 @@
                 </li>
               {%- endfor -%}
             </ul>
-
-            <div>
-              <input type="submit" value="Apply">
-            </div>
           {%- when 'price_range' -%}
             <div class="filter-group-display__price-range">
               <div class="filter-group-display__price-range-from">
-                <span>{{ cart.currency.symbol }}</span>
-
+                <label for="Filter-{{ filter.min_value.param_name }}">From</label>
                 <input name="{{ filter.min_value.param_name }}"
                   id="Filter-{{ filter.min_value.param_name }}"
                   {% if filter.min_value.value -%}
                     value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
                   {%- endif %}
-                  type="number"
                   placeholder="0"
+                  type="number"
                   min="0"
                   max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                 >
-
-                <label for="Filter-{{ filter.min_value.param_name }}">From</label>
               </div>
               <div class="filter-group-display__price-range-to">
-                <span>{{ cart.currency.symbol }}</span>
-
+                <label for="Filter-{{ filter.max_value.param_name }}">To</label>
                 <input name="{{ filter.max_value.param_name }}"
                   id="Filter-{{ filter.max_value.param_name }}"
                   {% if filter.max_value.value -%}
@@ -135,42 +115,10 @@
                   min="0"
                   max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                 >
-
-                <label for="Filter-{{ filter.max_value.param_name }}">To</label>
               </div>
-            </div>
-
-            <div class="filter-group-display__submit">
-              <input type="submit" value="Apply">
             </div>
         {%- endcase -%}
       </div>
-    </details>
+    </div>
   {%- endfor -%}
-
-  <div>
-    <p><a href="{{ collection.url }}?sort_by={{ collection.sort_by }}">Clear all</a></p>
-
-    {%- for filter in collection.filters -%}
-      {%- if filter.type == "price_range" -%}
-        {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-          <p>
-            <a href="{{ filter.url_to_remove }}">
-              {%- assign min_value = filter.min_value.value | default: 0 -%}
-              {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-              {{ min_value | money }} - {{ max_value | money }} X
-            </a>
-          </p>
-        {%- endif -%}
-      {%- else -%}
-        {%- for filter_value in filter.active_values -%}
-          <p>
-            <a href="{{ filter_value.url_to_remove }}">
-              {{ filter.label }}: {{ filter_value.label }} X
-            </a>
-          </p>
-        {%- endfor -%}
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
 </form>

@@ -46,6 +46,10 @@
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    <script>
+      window.loadedScripts = {};
+    </script>
+
     {{ content_for_header }}
 
     {%- liquid
@@ -342,12 +346,16 @@
       {{ content_for_layout }}
     </main>
 
+    {% section 'cart-drawer-new' %}
+
     {% sections 'footer-group' %}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
       <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
     </ul>
+
+    {{ 'global.min.js' | asset_url | script_tag }}
 
     <script>
       window.shopUrl = '{{ request.origin }}';

@@ -1,21 +1,25 @@
 {{ 'collection.min.css' | asset_url | stylesheet_tag }}
 {{ 'collection.min.js' | asset_url | script_tag }}
 
-<div class="collection section-{{ section.id }}">
+<div class="collection collection__section section-{{ section.id }}" id="shopify-section-{{ section.id }}">
+    <script>
+        localStorage.setItem("collectionId", "{{ section.id }}")
+    </script>
     <div class="page-width">
         <div class="collection__navbar">
             <div class="collection__content">
-                <h2 class="collection__content--heading">Ecommerce Acceories & Fashion item </h2>
-                <p class="collection__content--text">About 9,620 results (0.62 seconds)</p>
+                <h2 class="collection__content--heading">{{ section.settings.heading }}</h2>
+                <p class="collection__content--text">{{ section.settings.subheading }}</p>
             </div>
             <div class="collection__filter">
                 <div class="collection__filter--div">
-                    <span class="collection__filter--span">Per Page: </span>
-                    <input class="collection__filter--input" type="number">
+                    <span class="collection__filter--span">{{ section.settings.per_page }}</span>
+                    <span class="collection__filter--input">{{ section.settings.perpage_range }}</span>
+                    {% comment %} <input class="collection__filter--input" value="{{ section.settings.perpage_range }}"> {% endcomment %}
                 </div>
                 <div class="collection__filter--div">
                     <span class="collection__filter--span">
-                        <label for="SortBy">Sort By: </label>
+                        <label for="SortBy">{{ section.settings.sort_by }}</label>
                     </span>
                     {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
                     <select class="collection__filter--select" name="sort_by" id="SortBy">
@@ -25,23 +29,92 @@
                     </select>
                 </div>
                 <div class="collection__filter--div collection__filter--view">
-                    <span class="collection__filter--span">View: </span>
+                    <span class="collection__filter--span">{{ section.settings.view }}</span>
                     {% render 'icon' with 'grid' %}
                     {% render 'icon' with 'list' %}
                 </div>
+                <span class="collection__filter--button">Filters</span>
             </div>
         </div>
 
-        <div class="collection__filters">
-            {% render 'collection-filters', results: collection %}
-        </div>
-
+        <div class="collection__overlay"></div>
         <div class="collection__grid">
-            <div class="collection__grid--wrapper" id="CollectionGrid">
-                {% for product in collection.products %}
-                    {% render 'collection-product', product: product %}
-                {% endfor %}
+            <div class="collection__filters">
+                {% render 'icon' with 'close' %}
+                {% render 'collection-filters', results: collection %}
             </div>
+            <div class="collection__grid--box">
+            {% paginate collection.products by section.settings.perpage_range %}
+                    <div class="collection__grid--wrapper" data-page="{{ paginate.current_page }}" id="CollectionGrid">
+                        {% for product in collection.products %}
+                            {% render 'collection-product', product: product %}
+                        {% endfor %}
+                    </div>
+                    <button class="button collection__load--button">Load more</button>
+                    {% if paginate.pages > 1 %}                        
+                        <div class="pagination">
+                        <a href="{{ paginate.previous.url }}" class="pagination__link {% if paginate.previous.url %}pagination-active{% endif %}"><<</a>
+                            <div class="pagination__content">
+                                {% for part in paginate.parts %}
+                                    {% if part.is_link %}
+                                        <h3 class="pagination__content--number">{{ part.title | link_to: part.url }}</h3>
+                                    {% else %}
+                                        <h3 class="pagination__content--link">{{ part.title }}</h3>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <a href="{{ paginate.next.url }}" class="pagination__link {% if paginate.next.url %}pagination-active{% endif %}">>></a>
+                        </div>
+                    {% endif %}
+                {% endpaginate %}
+                </div>
         </div>
     </div>
 </div>
+
+{% schema %}
+{
+    "name": "Collection Products",
+    "settings": [
+        {
+            "type": "text",
+            "id": "heading",
+            "default": "Ecommerce Acceories & Fashion item",
+            "label": "Heading"
+        },
+        {
+            "type": "text",
+            "id": "subheading",
+            "default": "About 9,620 results (0.62 seconds)",
+            "label": "Subheading"
+        },
+        {
+            "type": "text",
+            "id": "per_page",
+            "default": "Per Page: ",
+            "label": "Per Page"
+        },
+        {
+            "type": "text",
+            "id": "sort_by",
+            "default": "Sort By: ",
+            "label": "Sort By"
+        },
+        {
+            "type": "text",
+            "id": "view",
+            "default": "View: ",
+            "label": "View"
+        },
+        {
+            "type": "range",
+            "id": "perpage_range",
+            "min": 4,
+            "max": 24,
+            "step": 4,
+            "label": "Per page",
+            "default": 4
+        }
+    ]
+}
+{% endschema %}
