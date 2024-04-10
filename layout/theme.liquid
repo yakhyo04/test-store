@@ -46,6 +46,10 @@
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    <script>
+      window.loadedScripts = {};
+    </script>
+
     {{ content_for_header }}
 
     {%- liquid
