@@ -5,12 +5,12 @@
     <div class="featured__productImage--wrapper">
         <div class="featured__icons--wrapper">
             <span class="featured__icon">
-                <form class="featured__form" method="post" action="/cart/add">
-                    <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
-                    <button type="submit" class="featured__button" id="{{ cart.item_count }}" value="{{ product.variants.first.id }}">
+                <add-to-cart class="featured__form" data-component='add-to-cart' data-id="{{ product.variants.first.id }}">
+                    {% comment %} <input type="hidden" name="id" value="{{ product.variants.first.id }}" /> {% endcomment %}
+                    <button type="submit" data-item="button" class="featured__button">
                         {% render 'icon' with 'cart' %}
                     </button>
-                </form>
+                </add-to-cart>
                 {% render 'icon' with 'wishlist' %}
                 {% render 'icon' with 'zoom' %}
             </span>
