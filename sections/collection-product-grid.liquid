@@ -3,20 +3,24 @@
 
 <div class="collection collection__section section-{{ section.id }}" id="shopify-section-{{ section.id }}">
     <script>
-        localStorage.setItem("collectionId", "{{ section.id }}")
+        window.sectionId = "{{ section.id }}"
     </script>
     <div class="page-width">
         <div class="collection__navbar">
             <div class="collection__content">
                 <h2 class="collection__content--heading">{{ section.settings.heading }}</h2>
-                <p class="collection__content--text">{{ section.settings.subheading }}</p>
+                {% if section.settings.subheading != blank %}
+                    <p class="collection__content--text">{{ section.settings.subheading }}</p>
+                {% endif %}
             </div>
             <div class="collection__filter">
-                <div class="collection__filter--div">
-                    <span class="collection__filter--span">{{ section.settings.per_page }}</span>
-                    <span class="collection__filter--input">{{ section.settings.perpage_range }}</span>
-                    {% comment %} <input class="collection__filter--input" value="{{ section.settings.perpage_range }}"> {% endcomment %}
-                </div>
+                {% if section.settings.per_page != blank %}
+                    <div class="collection__filter--div">
+                        <span class="collection__filter--span">{{ section.settings.per_page }}</span>
+                        <span class="collection__filter--input">{{ section.settings.perpage_range }}</span>
+                        {% comment %} <input class="collection__filter--input" value="{{ section.settings.perpage_range }}"> {% endcomment %}
+                    </div>
+                {% endif %}
                 <div class="collection__filter--div">
                     <span class="collection__filter--span">
                         <label for="SortBy">{{ section.settings.sort_by }}</label>
@@ -30,8 +34,12 @@
                 </div>
                 <div class="collection__filter--div collection__filter--view">
                     <span class="collection__filter--span">{{ section.settings.view }}</span>
-                    {% render 'icon' with 'grid' %}
-                    {% render 'icon' with 'list' %}
+                    <span class="icon__grid">
+                        {% render 'icon' with 'grid' %}
+                    </span>
+                    <span class="icon__list">
+                        {% render 'icon' with 'list' %}
+                    </span>
                 </div>
                 <span class="collection__filter--button">Filters</span>
             </div>
@@ -53,17 +61,17 @@
                     <button class="button collection__load--button">Load more</button>
                     {% if paginate.pages > 1 %}                        
                         <div class="pagination">
-                        <a href="{{ paginate.previous.url }}" class="pagination__link {% if paginate.previous.url %}pagination-active{% endif %}"><<</a>
+                        <a href="{{ paginate.previous.url }}" data-pagination-link name="page" data-value="{{ paginate.previous.url }}" class="pagination__link {% if paginate.previous.url %}pagination-active{% endif %}"><<</a>
                             <div class="pagination__content">
                                 {% for part in paginate.parts %}
                                     {% if part.is_link %}
-                                        <h3 class="pagination__content--number">{{ part.title | link_to: part.url }}</h3>
+                                        <h3 class="pagination__content--number" data-pagination-item name="page" data-value="{{ part.title }}">{{ part.title | link_to: part.url }}</h3>
                                     {% else %}
-                                        <h3 class="pagination__content--link">{{ part.title }}</h3>
+                                        <h3 class="pagination__content--link" data-pagination-item name="page" data-value="{{ part.title }}">{{ part.title }}</h3>
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <a href="{{ paginate.next.url }}" class="pagination__link {% if paginate.next.url %}pagination-active{% endif %}">>></a>
+                            <a href="{{ paginate.next.url }}" data-pagination-link name="page" data-value="{{ paginate.next.url }}" class="pagination__link {% if paginate.next.url %}pagination-active{% endif %}">>></a>
                         </div>
                     {% endif %}
                 {% endpaginate %}

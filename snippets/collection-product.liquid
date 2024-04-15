@@ -1,8 +1,8 @@
-<a href="{{ product.url }}" class="collection__product">
+<a href="{{ product.url }}" class="collection__product {% if product.available %}{% else %}collection__unavailable--product{% endif %}">
     <div class="collection__productImage--wrapper">
         <div class="collection__product--icons">
             <add-to-cart class="collection__form" data-component='add-to-cart' data-id="{{ product.variants.first.id }}">
-                <button type="submit" data-item="button" class="collection__button">
+                <button type="submit" data-item="button" {% if product.available %} {% else %} disabled {% endif %} class="collection__button">
                     {% render 'icon' with 'cart' %}
                 </button>
             </add-to-cart>
@@ -11,6 +11,10 @@
         </div>
         <img class="collection__product--image" src="{{ product.featured_media | image_url: width: 200, height: 200 }}" alt="{{ product.title | escape }}">
     </div>
+    {% if product.available %}
+    {% else %}
+        <p class="collection__unavailable--text">Product Unavailable</p>
+    {% endif %}
     <div class="collection__product--content">
         <h3 class="collection__product--title">{{ product.title | truncate: 20 }}</h3>
         <div class="collection__product--colors">
@@ -24,5 +28,6 @@
                 <p class="collection__product--price collection__compare--price">{{ product.compare_at_price | money }}</p>
             {% endif %}
         </div>
+        <p class="collection__description">{{ product.description }}</p>
     </div>
 </a>

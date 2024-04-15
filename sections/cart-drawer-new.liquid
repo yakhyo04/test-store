@@ -16,7 +16,7 @@
     </header>
 
     <script>
-      localStorage.setItem("cartDrawerId", "{{ section.id }}")
+      window.cartDrawerId = "{{ section.id }}"
     </script>
 
     {% form 'cart', cart, class: 'cart__drawer-form' %}
@@ -42,7 +42,7 @@
                         type="text"
                         readonly
                         value="{{ item.quantity }}"
-                        style="margin: 0; padding: 0; height: 25px;">
+                        class="cart__drawer--input">
                       <button class="cart__drawer-quantity-selector-plus drawer-button" type="button">+</button>
                     </div>
                   </div>
@@ -68,8 +68,8 @@
           </div>
           <a
             href="/cart"
-            class="cart__drawer-button drawer-button"
-            style="text-align: center; color: #fff; margin-bottom: 20px;">Cart</a>
+            class="cart__drawer-button drawer-button cart__drawer--cartButton"
+            >Cart</a>
           <button
             type="submit"
             name="checkout"
