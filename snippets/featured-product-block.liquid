@@ -1,7 +1,7 @@
 {{ 'featured-products.min.css' | asset_url | stylesheet_tag }}
 {{ 'collection-slider.min.js' | asset_url | script_tag }}
 
-<a href="{{ product.url }}" class="featured__product--block swiper-slide">
+<a href="{{ product.url }}" class="featured__product--block swiper-slide {% if product.available %}''{% else %}featured__product--unavailable {% endif %}%}">
     <div class="featured__productImage--wrapper">
         <div class="featured__icons--wrapper">
             <span class="featured__icon">
@@ -17,6 +17,11 @@
         </div>
         <span class="featured__span">View Details</span>
         <img class="featured__product--image" src="{{ product.featured_media | image_url }}" alt="">
+
+        {% if product.available %}
+        {% else %}
+            <p class="featured__unavailable--text">Product Unavailable</p>
+        {% endif %}
     </div>
     <div class="featured__product--content">
         <h3 class="featured__product--title">{{ product.title |  truncate: 20 }}</h3>

@@ -146,6 +146,20 @@
     border: none;
     cursor: pointer;
 }
+.featured__product--unavailable{
+    opacity: 0.5;
+    position: relative;
+}
+.featured__unavailable--text{
+    position: absolute;
+    background-color: #fff;
+    color: #222;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
 
 @media (max-width: 1120px){
     .featured__product--content{

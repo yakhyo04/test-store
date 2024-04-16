@@ -1,6 +1,16 @@
 import './styles/collection-slider.scss';
 import { onDocumentReady } from '../utils/dom';
 
+const state = {
+    elements: {}
+}
+
+const cacheState = () => {
+    state.elements = {
+        mySwiper: document.querySelectorAll(".collection__slider--swiper"),
+    }
+}
+
 const addToCart = (e) => {
     const { target } = e;
 
@@ -32,6 +42,48 @@ const addToCart = (e) => {
         console.log("Error message: ", error)
     })
 }
+
+const initializeSwipers = () => {
+    state.elements.mySwiper.forEach((swiperContainer, index) => {
+        const swiper = new Swiper(swiperContainer, {
+            slidesPerView: 4,
+            spaceBetween: 18,
+            direction: 'horizontal',
+            breakpoints: {
+                220: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                },
+                370: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+                },
+                550: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+                },
+                1000: {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                }
+                
+            },
+            pagination: {
+                el: swiperContainer.querySelector('.swiper-pagination'),
+                clickable: true,
+            },
+        });
+    });
+};
+
+const init = () => {
+    cacheState();
+    if (window.loadedScripts["featured-products"]) return;
+    window.loadedScripts["featured-products"] = true;
+    initializeSwipers();
+}
+
+onDocumentReady(init);
 
 class AddToCart extends HTMLElement{
     constructor(){
