@@ -11,8 +11,12 @@
         </div>
         {% assign aspect_ratio = product.featured_media.preview_image.aspect_ratio %}
         {% assign width = 200 %}
-        {% assign height = width |  times: aspect_ratio %}
-        <img class="collection__product--image" src="{{ product.featured_media | image_url: width: width, height: height }}" alt="{{ product.title | escape }}">
+        {% assign height = width | times: aspect_ratio %}
+        {% assign alt = product.featured_media.alt |  default: product.title | escape %}
+        <div class="collection__product--image">
+            {{ product.featured_media | image_url: width: 1500 | image_tag: width: width, height: height }}
+        </div>
+        {% comment %} <img class="collection__product--image" src="{{ product.featured_media | image_url: width: width, height: height }}" alt="{{ product.title | escape }}"> {% endcomment %}
     </div>
     {% if product.available %}
     {% else %}
