@@ -67,14 +67,18 @@
         "padding_bottom": 36
       }
     },
-    "promotion": {
-      "type": "promotion",
-      "settings": {}
+    "collection_slider_ipCN3H": {
+      "type": "collection-slider",
+      "settings": {
+        "color_scheme": "",
+        "title": "Title",
+        "collection": "featured-products"
+      }
     }
   },
   "order": [
     "image_banner",
-    "promotion",
-    "featured_collection"
+    "featured_collection",
+    "collection_slider_ipCN3H"
   ]
 }
