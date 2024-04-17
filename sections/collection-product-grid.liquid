@@ -53,7 +53,9 @@
             </div>
             <div class="collection__grid--box">
             {% paginate collection.products by section.settings.perpage_range %}
-                    <div class="collection__grid--wrapper" data-page="{{ paginate.current_page }}" id="CollectionGrid">
+                    <div class="collection__grid--wrapper" {% if paginate.next %}
+                        data-next="true"
+                    {% endif %} data-page="{{ paginate.current_page }}" id="CollectionGrid">
                         {% for product in collection.products %}
                             {% render 'collection-product', product: product %}
                         {% endfor %}
