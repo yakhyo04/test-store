@@ -32,6 +32,9 @@
     justify-content: space-between;
     flex-wrap: wrap;
     color: var(--color-midnight-color);
+}   
+.collection__filter{
+    margin-left: auto;
 }
 .collection__filter--div{
     gap: 8px;
@@ -68,9 +71,10 @@
     color: #8A8FB9;
     font-size: 12px;
     text-align: center;
+    cursor: pointer;
 }
 .collection__filter--select{
-    width: 100px;
+    width: auto;
 }
 
 .collection__grid{
@@ -87,6 +91,12 @@
 .icon__grid,
 .icon__list{
     cursor: pointer;
+    line-height: 0;
+
+    svg{
+        width: 20px;
+        height: 20px;
+    }
 }
 .collection__grid--wrapper,
 .collection__grid--section{
@@ -253,6 +263,7 @@
     color: #7E81A2;
     font-size: 16px;
     font-weight: 400;
+    cursor: pointer;
 }
 .collection__filter--form input[type="checkbox"]{
     // accent-color: #603EFF;
@@ -306,7 +317,7 @@
 .collection__filter--title{
     color: var(--color-midnight-color);
     font-size: 20px;
-    border-bottom: 1px solid #000;
+    // border-bottom: 1px solid #000;
     font-weight: bold;
 }
 .collection__filter--button{
@@ -419,6 +430,11 @@
     justify-content: center;
     opacity: 1;
 }
+.pagination-notactive{
+    pointer-events: none;        
+    text-decoration: none;
+    opacity: 0.5;
+}
 
 @media (max-width: 1120px){
     .collection__productImage--wrapper{
@@ -448,6 +464,14 @@
     }
     .collection__filter--button{
         display: block;
+        background-color: var(--color-midnight-color);
+        color: #fff;
+        padding: 5px 40px;
+        border-radius: 8px;
+        text-align: center;
+    }
+    .collection__filter{
+        width: 100%;
     }
     .collection__filters{
         width: 60%;
@@ -480,6 +504,12 @@
 }
 
 @media (max-width: 600px){
+    .collection__filter--button{
+        width: 100%;
+    }
+    .collection__unavailable--text{
+        font-size: 10px;
+    }
     .collection__filters{
         width: 90%;
     }

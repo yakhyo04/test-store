@@ -7,7 +7,7 @@
     </script>
     <div class="page-width">
         <div class="collection__navbar">
-            <div class="collection__content">
+            <div class="collection__content" style="{% if section.settings.heading == blank %}display: none;{% endif %}">
                 <h2 class="collection__content--heading">{{ section.settings.heading }}</h2>
                 {% if section.settings.subheading != blank %}
                     <p class="collection__content--text">{{ section.settings.subheading }}</p>
@@ -58,21 +58,27 @@
                             {% render 'collection-product', product: product %}
                         {% endfor %}
                     </div>
-                    <button class="button collection__load--button">Load more</button>
+
                     {% if paginate.pages > 1 %}                        
-                        <div class="pagination">
-                        <a href="{{ paginate.previous.url }}" data-pagination-link name="page" data-value="{{ paginate.previous.url }}" class="pagination__link {% if paginate.previous.url %}pagination-active{% endif %}"><<</a>
-                            <div class="pagination__content">
-                                {% for part in paginate.parts %}
-                                    {% if part.is_link %}
-                                        <h3 class="pagination__content--number" data-pagination-item name="page" data-value="{{ part.title }}">{{ part.title | link_to: part.url }}</h3>
-                                    {% else %}
-                                        <h3 class="pagination__content--link" data-pagination-item name="page" data-value="{{ part.title }}">{{ part.title }}</h3>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <a href="{{ paginate.next.url }}" data-pagination-link name="page" data-value="{{ paginate.next.url }}" class="pagination__link {% if paginate.next.url %}pagination-active{% endif %}">>></a>
-                        </div>
+                        {% if section.settings.select != blank %}
+                            {% if section.settings.select == 'load-more' %}
+                            <button class="button collection__load--button collection__paginate--btn">Load more</button>
+                            {% elsif section.settings.select == 'pagination' %}
+                                    <div class="pagination collection__paginate--btn">
+                                    <a href="{{ paginate.previous.url }}" data-pagination-link name="page" data-value="{{ paginate.previous.url }}" class="pagination__link {% if paginate.previous.url %}pagination-active{% else %}pagination-notactive{% endif %}"><<</a>
+                                        <div class="pagination__content">
+                                            {% for part in paginate.parts %}
+                                                {% if part.is_link %}
+                                                    <h3 class="pagination__content--number" data-pagination-item name="page" data-value="{{ part.title }}">{{ part.title | link_to: part.url }}</h3>
+                                                {% else %}
+                                                    <h3 class="pagination__content--link" data-pagination-item name="page" data-value="{{ part.title }}">{{ part.title }}</h3>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <a href="{{ paginate.next.url }}" data-pagination-link name="page" data-value="{{ paginate.next.url }}" class="pagination__link {% if paginate.next.url %}pagination-active{% else %}pagination-notactive{% endif %}">>></a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
                     {% endif %}
                 {% endpaginate %}
                 </div>
@@ -122,6 +128,21 @@
             "step": 4,
             "label": "Per page",
             "default": 4
+        },
+        {
+            "type": "select",
+            "label": "Select",
+            "id": "select",
+            "options": [
+                {
+                    "value": "load-more",
+                    "label": "Load More"
+                },
+                {
+                    "value": "pagination",
+                    "label": "Pagination"
+                }
+            ]
         }
     ]
 }

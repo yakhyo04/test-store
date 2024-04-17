@@ -37,6 +37,7 @@ const cacheState = () => {
     sortResult: 'created-ascending',
     filterResult: '',
     filterPriceResult: '',
+    paginateBtn: document.querySelectorAll(".collection__paginate--btn"),
   };
 };
 
@@ -53,6 +54,18 @@ const pageValue = () => {
   }
 }
 
+const hidingPaginateBtn = () => {
+  state.elements.paginateBtn.forEach((a) => {
+    a.style.display = 'none'
+  })
+}
+
+const showingPaginateBtn = () => {
+  state.elements.paginateBtn.forEach((a) => {
+    a.style.display = 'block'
+  })
+}
+
 const collectionLoadMore = async () => {
   try {
     const response = await fetch(
@@ -65,6 +78,10 @@ const collectionLoadMore = async () => {
     );
     const items = collectionsWrapper.querySelectorAll(".collection__product");
     state.elements.defaultPage += 1;
+    console.log("items: ", items.length);
+    if(items.length == 0){
+      hidingPaginateBtn();
+    }
     return items;
   } catch (error) {
     console.log(error);
@@ -72,9 +89,9 @@ const collectionLoadMore = async () => {
 };
 
 const renderCollections = (items) => {
-  items.forEach((item) => {
-    state.elements.collectionGrid.insertAdjacentElement("beforeend", item);
-  });
+    items.forEach((item) => {
+      state.elements.collectionGrid.insertAdjacentElement("beforeend", item);
+    });
 };
 
 const resultData = (data) => {
@@ -124,6 +141,7 @@ function updateUrlParams() {
 
   if (sortBy.value) {
     state.elements.defaultPage = 2;
+    showingPaginateBtn();
     state.elements.sortResult = sortBy.value;
     params.set(sortBy.name, sortBy.value);
   }
@@ -133,6 +151,7 @@ function updateUrlParams() {
       const name = checkbox.getAttribute("name");
       const value = checkbox.getAttribute("value");
       state.elements.defaultPage = 2;
+      showingPaginateBtn();
       state.elements.filterResult = `${name + '=' + value}`;
       params.append(name, value);
     }
@@ -140,6 +159,7 @@ function updateUrlParams() {
 
   state.elements.collectionFilterPrice.forEach((price) => {
     state.elements.defaultPage = 2;
+    showingPaginateBtn();
     const name = price.getAttribute("name");
     state.elements.filterPriceResult = `${name + '=' + price.value}`;
     params.set(name, price.value);
