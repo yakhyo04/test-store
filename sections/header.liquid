@@ -24,7 +24,9 @@
                 </a>
                 <a class="header__right--link header__right--cart" href="{{ routes.cart_url }}">
                     {% render 'icon' with "cart" %}
-                    <span class="header__cart--count">{{ cart.item_count }}</span>
+                    <span class="header__cart--count">
+                      {{ cart.item_count }}
+                    </span>
                 </a>
                 {% if section.settings.show_search %}
                 <form action="{{ routes.search_url }}">
