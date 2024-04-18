@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="414ff7d1-a5ce-4437-b0f9-b57f1591b688" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/test-store.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/global.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/global.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/header.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/header.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sections/collection-product-grid.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/sections/collection-product-grid.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sections/header.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/sections/header.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snippets/collection-product.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/snippets/collection-product.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/cart-drawer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/cart-drawer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/collection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/styles/collection.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/styles/collection.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/styles/header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/styles/header.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/addToCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/addToCart.js" afterDir="false" />
-    </list>
+    <list default="true" id="414ff7d1-a5ce-4437-b0f9-b57f1591b688" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,6 +13,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "yakhyo04"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/yakhyo04/test-store.git",
+    "accountId": "cd2c33e4-a497-4108-a2ca-6afbb9c95a18"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -44,25 +36,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;collection&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/macstore.uz/llama-commerce/test-store&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/macstore.uz/llama-commerce/test-store/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "#11 on promotion",
+    "last_opened_file_path": "/Users/macstore.uz/llama-commerce/test-store",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "prettierjs.PrettierConfiguration.Package": "/Users/macstore.uz/llama-commerce/test-store/node_modules/prettier",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -80,6 +72,7 @@
       <updated>1712318303477</updated>
       <workItem from="1712318304260" duration="7432000" />
       <workItem from="1712666808043" duration="737000" />
+      <workItem from="1713424351789" duration="524000" />
     </task>
     <servers />
   </component>
