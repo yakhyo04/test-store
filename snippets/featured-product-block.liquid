@@ -1,0 +1,42 @@
+{{ 'featured-products.min.css' | asset_url | stylesheet_tag }}
+{{ 'collection-slider.min.js' | asset_url | script_tag }}
+
+<a href="{{ product.url }}" class="featured__product--block swiper-slide {% if product.available %}''{% else %}featured__product--unavailable {% endif %}%}">
+    <div class="featured__productImage--wrapper">
+        <div class="featured__icons--wrapper">
+            <span class="featured__icon">
+                <add-to-cart class="featured__form" data-component='add-to-cart' data-id="{{ product.variants.first.id }}">
+                    {% comment %} <input type="hidden" name="id" value="{{ product.variants.first.id }}" /> {% endcomment %}
+                    <button type="submit" data-item="button" class="featured__button">
+                        {% render 'icon' with 'cart' %}
+                    </button>
+                </add-to-cart>
+                {% render 'icon' with 'wishlist' %}
+                {% render 'icon' with 'zoom' %}
+            </span>
+        </div>
+        <span class="featured__span">View Details</span>
+        <img class="featured__product--image" src="{{ product.featured_media | image_url }}" alt="">
+
+        {% if product.available %}
+        {% else %}
+            <p class="featured__unavailable--text">Product Unavailable</p>
+        {% endif %}
+    </div>
+    <div class="featured__product--content">
+        <h3 class="featured__product--title">{{ product.title |  truncate: 20 }}</h3>
+        <div class="featured__product--colors">
+        {% for variant in product.variants %}
+            {% if variant.metafields.custom.colors %}
+                <span class="featured__product--color" style="background-color: {{ variant.metafields.custom.colors }};"></span>
+            {% endif %}
+        {% endfor %}
+        </div>
+        <div class="featured__product--money--wrapper">
+            <p class="featured__product--money">{{ product.price | money }}</p>
+            {% if product.compare_at_price > product.price %}
+                <p class="featured__product--money featured__product--compare--money">{{ product.compare_at_price | money }}</p>
+            {% endif %}
+        </div>
+    </div>
+</a>
