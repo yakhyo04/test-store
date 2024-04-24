@@ -1,9 +1,33 @@
 import "./styles/collection.scss";
 import { onDocumentReady } from "../utils/dom";
 import { addToCart } from "../utils/addToCart";
+import { domParser } from "../utils/domParser";
+
+class AddToCart extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    onDocumentReady(() => {
+      this.addToCart = this.querySelector("[data-component='add-to-cart']");
+      this.init();
+    });
+  }
+
+  init() {
+    document.addEventListener("click", (e) => {
+      addToCart(e);
+    });
+  }
+}
+
+customElements.define("add-to-cart", AddToCart);
 
 const state = {
   elements: {},
+  queryParams: {},
+  queryParam: new URLSearchParams(window.location.search)
 };
 
 const cacheState = () => {
@@ -31,48 +55,102 @@ const cacheState = () => {
     iconGrid: document.querySelector(".icon__grid"),
     iconList: document.querySelector(".icon__list"),
     collectionProduct: document.querySelectorAll(".collection__product"),
-    url: new URL(window.location.href),
-    sortResult: "created-ascending",
-    defaultPage: 2,
-    filterResult: "",
-    filterPriceResult: "",
   };
+  state.queryParams = {
+    url: new URL(window.location.href),
+    page: 2,
+    paramQueries: ['sort_by', 'filter.v.price.gte', 'filter.v.price.lte', 'page']
+  }
 };
 
-const hidingPaginateBtn = () => {
+const togglePaginateBtns = (force) => {
   state.elements.paginateBtn.forEach((a) => {
-    a.classList.add("active");
-  });
+    a.classList.toggle("active", force)
+  })
+}
+
+const toggleCollectionGrid = (force) => {
+  state.elements.collectionGrid.classList.toggle("active", force);
+}
+
+const toggleFilterDrawer = (force) => {
+  document.body.classList.toggle("filter__drawer--open", force);
+}
+
+const resultData = (data) => {
+  const newInnerHtml = domParser(data).getElementById("CollectionGrid").innerHTML;
+  state.elements.collectionGrid.innerHTML = newInnerHtml;
+}
+
+const updatePagination = (value) => {
+  if(!value.dataset.next){
+    togglePaginateBtns(true);
+  }else{
+    state.elements.paginateNext = value.dataset.next;
+  }
+}
+
+const onGridLayoutChange = (e) => {
+  const layoutType = e.currentTarget.dataset.layoutType || "list";
+  state.elements.collectionGrid.dataset.layout = layoutType;
+}
+
+const fetchDataURL = async (url) => {
+  try{
+    toggleCollectionGrid(true);
+    const response = await fetch(url);
+    const data = await response.text();
+    return data;
+  }catch(error){
+    console.error(error);
+    return null;
+  }finally{
+    toggleCollectionGrid(false);
+  }
+}
+
+const fetchData = async () => {
+  toggleCollectionGrid(true);
+  const data = await fetchDataURL(state.queryParams.url);
+  if (data) {
+  toggleCollectionGrid(false);
+    resultData(data);
+  }
 };
 
-const showingPaginateBtn = () => {
-  state.elements.paginateBtn.forEach((a) => {
-    a.classList.remove("active");
-  });
-};
+const setParams = (name, value) => {
+  const params = state.queryParam;
+
+  if(params.has(name, value)){
+    params.delete(name, value);
+  }else{
+    if(state.queryParams.paramQueries.includes(name)){
+      params.set(name, value);
+    }else{
+      params.append(name, value);
+    }
+  }
+
+  state.queryParams.url.search = params.toString();
+
+  const paramsURL = state.queryParams.url.href;
+
+  window.history.pushState({}, "", paramsURL);
+
+  return paramsURL; 
+}
 
 const collectionLoadMore = async () => {
   try {
-    const response = await fetch(
-      `${window.location.pathname}?section=${window.sectionId}&sort_by=${state.elements.sortResult}&page=${state.elements.defaultPage}&${state.elements.filterResult}&${state.elements.filterPriceResult}`,
-    );
-    const data = await response.text();
-    const collectionsWrapper = new DOMParser().parseFromString(
-      data,
-      "text/html",
-    );
+    setParams('page', state.queryParams.page);
+    const params = state.queryParam.toString();
+    const url = `${window.location.pathname}?section=${window.sectionId}&${params}`;
+    const data = await fetchDataURL(url);
+    const collectionsWrapper = domParser(data);
     const items = collectionsWrapper.querySelectorAll(".collection__product");
-    state.elements.defaultPage += 1;
-
-    const value = collectionsWrapper.querySelector(
-      ".collection__grid--wrapper",
-    );
-
-    if (!value.dataset.next) {
-      hidingPaginateBtn();
-    } else {
-      state.elements.paginateNext = value.dataset.next;
-    }
+    setParams('page', state.queryParams.page);
+    state.queryParams.page += 1;
+    updatePagination(collectionsWrapper.querySelector(".collection__grid--wrapper"));
 
     return items;
   } catch (error) {
@@ -86,139 +164,40 @@ const renderCollections = (items) => {
   });
 };
 
-const resultData = (data) => {
-  const newInnerHtml = new DOMParser()
-    .parseFromString(data, "text/html")
-    .getElementById("CollectionGrid").innerHTML;
+const onSortAndFilterChange = (e) => {
+  const name = e.target.attributes.name.value;
+  const { value } = e.target;
 
-  state.elements.collectionGrid.innerHTML = newInnerHtml;
-};
+  setParams(name, value);
 
-const setActivePagination = (itemIndex) => {
-  state.elements.paginationItems.forEach((paginationItem, index) => {
-    paginationItem.className = "";
-    if (index !== itemIndex) {
-      paginationItem.classList.add("pagination__content--number");
-      return;
-    }
-    paginationItem.classList.add("pagination__content--link");
-  });
-};
+  fetchData();
 
-const filterDrawerOpen = () => {
-  state.elements.filterWrapper.classList.add("active");
-  state.elements.collectionOverlay.classList.add("active");
-  state.elements.body.overflow = "hidden";
-};
-
-const filterDrawerClose = () => {
-  state.elements.filterWrapper.classList.remove("active");
-  state.elements.collectionOverlay.classList.remove("active");
-  state.elements.body.overflow = "visible";
-};
-
-const gridFunction = () => {
-  state.elements.collectionGrid.classList.remove("collection__list--section");
-  state.elements.collectionGrid.classList.add("collection__grid--section");
-};
-
-const listFunction = () => {
-  state.elements.collectionGrid.classList.remove("collection__grid--section");
-  state.elements.collectionGrid.classList.add("collection__list--section");
-};
-
-function updateUrlParams() {
-  const { sortBy } = state.elements;
-  const params = new URLSearchParams();
-
-  if (sortBy.value) {
-    state.elements.defaultPage = 2;
-    showingPaginateBtn();
-    state.elements.sortResult = sortBy.value;
-    params.set(sortBy.name, sortBy.value);
-  }
-
-  state.elements.collectionFilterCheckbox.forEach((checkbox) => {
-    if (checkbox.checked) {
-      const name = checkbox.getAttribute("name");
-      const value = checkbox.getAttribute("value");
-      state.elements.defaultPage = 2;
-      showingPaginateBtn();
-      state.elements.filterResult = `${`${name}=${value}`}`;
-      params.append(name, value);
-    }
-  });
-
-  state.elements.collectionFilterPrice.forEach((price) => {
-    state.elements.defaultPage = 2;
-    showingPaginateBtn();
-    const name = price.getAttribute("name");
-    state.elements.filterPriceResult = `${`${name}=${price.value}`}`;
-    params.set(name, price.value);
-  });
-
-  const { paginationItems } = state.elements;
-  for (let i = 0; i < paginationItems.length; i++) {
-    const item = paginationItems[i];
-    if (item.classList.contains("pagination__content--link")) {
-      const value = item.getAttribute("data-value");
-      // state.elements.defaultPage = value + 1;
-      const name = item.getAttribute("name");
-      params.set(name, value);
-      break;
-    }
-  }
-
-  state.elements.url.search = params.toString();
-  window.history.pushState({}, "", state.elements.url);
+  state.queryParams.page = 2;
+  togglePaginateBtns(false);
 }
 
-const fetchData = async () => {
-  state.elements.collectionGrid.classList.add("active");
-  const res = await fetch(state.elements.url);
-  const data = await res.text();
-
-  if (data) {
-    state.elements.collectionGrid.classList.remove("active");
-    resultData(data);
-  }
-};
-
-const sortFunction = async () => {
-  updateUrlParams();
-  fetchData();
-};
-
 const attachEventListeners = () => {
-  state.elements.sortBy.addEventListener("change", sortFunction);
-  state.elements.filterButton.addEventListener("click", filterDrawerOpen);
-  state.elements.collectionOverlay.addEventListener("click", filterDrawerClose);
-  state.elements.filterCloseButton.addEventListener("click", filterDrawerClose);
-  state.elements.iconGrid.addEventListener("click", gridFunction);
-  state.elements.iconList.addEventListener("click", listFunction);
-  state.elements.collectionFilterPrice.forEach((price) => {
-    price.addEventListener("change", async () => {
-      updateUrlParams();
-      fetchData();
-    });
-  });
-  state.elements.paginationItems.forEach((item, index) => {
-    item.addEventListener("click", async (e) => {
-      e.preventDefault();
-      setActivePagination(index);
-      updateUrlParams();
-      fetchData();
-    });
-  });
-  state.elements.collectionFilterCheckbox.forEach((checkbox) => {
-    checkbox.addEventListener("change", async () => {
-      updateUrlParams();
-      fetchData();
-    });
-  });
+  state.elements.filterButton.addEventListener("click", () => toggleFilterDrawer(true));
+  state.elements.collectionOverlay.addEventListener("click", () => toggleFilterDrawer(false));
+  state.elements.filterCloseButton.addEventListener("click", () => toggleFilterDrawer(false));
+  state.elements.iconGrid.addEventListener("click", onGridLayoutChange);
+  state.elements.iconList.addEventListener("click", onGridLayoutChange);
   state.elements.collectionButton.addEventListener("click", async () => {
     const productItem = await collectionLoadMore();
     renderCollections(productItem);
+  });
+  state.elements.sortBy.addEventListener("change", (e) => {
+    onSortAndFilterChange(e);
+  });
+  state.elements.collectionFilterPrice.forEach((price) => {
+    price.addEventListener("change", async (e) => {
+      onSortAndFilterChange(e);
+    });
+  });
+  state.elements.collectionFilterCheckbox.forEach((checkbox) => {
+    checkbox.addEventListener("change", async (e) => {
+      onSortAndFilterChange(e);
+    });
   });
 };
 
@@ -228,32 +207,3 @@ const init = () => {
 };
 
 onDocumentReady(init);
-
-class AddToCart extends HTMLElement {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    onDocumentReady(() => {
-      this.addToCart = this.querySelector("[data-component='add-to-cart']");
-      this.init();
-    });
-  }
-
-  init() {
-    document.addEventListener("click", (e) => {
-      addToCart(e);
-    });
-  }
-
-  disconnectedCallback() {
-    console.log("Disconnected Callback");
-  }
-
-  adoptedCallback() {
-    console.log("Adopted Callback");
-  }
-}
-
-customElements.define("add-to-cart", AddToCart);

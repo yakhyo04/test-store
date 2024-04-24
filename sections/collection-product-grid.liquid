@@ -34,10 +34,10 @@
                 </div>
                 <div class="collection__filter--div collection__filter--view">
                     <span class="collection__filter--span">{{ section.settings.view }}</span>
-                    <span class="icon__grid">
+                    <span class="icon__grid" data-layout-type="grid">
                         {% render 'icon' with 'grid' %}
                     </span>
-                    <span class="icon__list">
+                    <span class="icon__list" data-layout-type="list">
                         {% render 'icon' with 'list' %}
                     </span>
                 </div>
@@ -55,7 +55,7 @@
             {% paginate collection.products by section.settings.perpage_range %}
                     <div class="collection__grid--wrapper" {% if paginate.next %}
                         data-next="true"
-                    {% endif %} data-page="{{ paginate.current_page }}" id="CollectionGrid">
+                    {% endif %} data-page="{{ paginate.current_page }}" id="CollectionGrid" data-layout="{{ section.settings.product_type }}">
                         {% for product in collection.products %}
                             {% render 'collection-product', product: product %}
                         {% endfor %}
@@ -130,6 +130,21 @@
             "step": 4,
             "label": "Per page",
             "default": 4
+        },
+        {
+            "type": "select",
+            "label": "Product type",
+            "id": "product_type",
+            "options": [
+                {
+                    "value": "grid",
+                    "label": "Grid"
+                },
+                {
+                    "value": "list",
+                    "label": "List"
+                }
+            ]
         },
         {
             "type": "select",
