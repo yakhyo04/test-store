@@ -77,12 +77,12 @@ const toggleFilterDrawer = (force) => {
   document.body.classList.toggle("filter__drawer--open", force);
 }
 
-const resultData = (data) => {
+const renderData = (data) => {
   const newInnerHtml = domParser(data).getElementById("CollectionGrid").innerHTML;
   state.elements.collectionGrid.innerHTML = newInnerHtml;
 }
 
-const updatePagination = (value) => {
+const updatePaginationBtns = (value) => {
   if(!value.dataset.next){
     togglePaginateBtns(true);
   }else{
@@ -114,7 +114,7 @@ const fetchData = async () => {
   const data = await fetchDataURL(state.queryParams.url);
   if (data) {
   toggleCollectionGrid(false);
-    resultData(data);
+    renderData(data);
   }
 };
 
@@ -140,7 +140,7 @@ const setParams = (name, value) => {
   return paramsURL; 
 }
 
-const collectionLoadMore = async () => {
+const loadMoreFunction = async () => {
   try {
     setParams('page', state.queryParams.page);
     const params = state.queryParam.toString();
@@ -150,7 +150,7 @@ const collectionLoadMore = async () => {
     const items = collectionsWrapper.querySelectorAll(".collection__product");
     setParams('page', state.queryParams.page);
     state.queryParams.page += 1;
-    updatePagination(collectionsWrapper.querySelector(".collection__grid--wrapper"));
+    updatePaginationBtns(collectionsWrapper.querySelector(".collection__grid--wrapper"));
 
     return items;
   } catch (error) {
@@ -183,7 +183,7 @@ const attachEventListeners = () => {
   state.elements.iconGrid.addEventListener("click", onGridLayoutChange);
   state.elements.iconList.addEventListener("click", onGridLayoutChange);
   state.elements.collectionButton.addEventListener("click", async () => {
-    const productItem = await collectionLoadMore();
+    const productItem = await loadMoreFunction();
     renderCollections(productItem);
   });
   state.elements.sortBy.addEventListener("change", (e) => {
