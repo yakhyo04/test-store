@@ -113,7 +113,7 @@ const fetchData = async () => {
   toggleCollectionGrid(true);
   const data = await fetchDataURL(state.queryParams.url);
   if (data) {
-  toggleCollectionGrid(false);
+    toggleCollectionGrid(false);
     renderData(data);
   }
 };
@@ -142,14 +142,15 @@ const setParams = (name, value) => {
 
 const loadMoreFunction = async () => {
   try {
-    setParams('page', state.queryParams.page);
+    let { page } = state.queryParams;
+    setParams('page', page);
     const params = state.queryParam.toString();
     const url = `${window.location.pathname}?section=${window.sectionId}&${params}`;
     const data = await fetchDataURL(url);
     const collectionsWrapper = domParser(data);
     const items = collectionsWrapper.querySelectorAll(".collection__product");
-    setParams('page', state.queryParams.page);
-    state.queryParams.page += 1;
+    setParams('page', page);
+    page += 1;
     updatePaginationBtns(collectionsWrapper.querySelector(".collection__grid--wrapper"));
 
     return items;
@@ -177,11 +178,11 @@ const onSortAndFilterChange = (e) => {
 }
 
 const attachEventListeners = () => {
+  state.elements.iconGrid.addEventListener("click", onGridLayoutChange);
+  state.elements.iconList.addEventListener("click", onGridLayoutChange);
   state.elements.filterButton.addEventListener("click", () => toggleFilterDrawer(true));
   state.elements.collectionOverlay.addEventListener("click", () => toggleFilterDrawer(false));
   state.elements.filterCloseButton.addEventListener("click", () => toggleFilterDrawer(false));
-  state.elements.iconGrid.addEventListener("click", onGridLayoutChange);
-  state.elements.iconList.addEventListener("click", onGridLayoutChange);
   state.elements.collectionButton.addEventListener("click", async () => {
     const productItem = await loadMoreFunction();
     renderCollections(productItem);
