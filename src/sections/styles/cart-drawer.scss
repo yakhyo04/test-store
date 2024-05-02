@@ -1,0 +1,249 @@
+.cart__drawer {
+  position: fixed;
+  top: 0;
+  left: -9999px;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  /* padding: 24px; */
+  transition: left 0s 0.2s, opacity 0.2s;
+}
+
+.drawer-button{
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  line-height: 1;
+}
+
+.cart__drawer input{
+  border: 1px solid #d3d3d3;
+  color: #2c2d2e;
+  font-size: .8125rem;
+  font-weight: 400;
+  background: transparent;
+  max-width: 100%;
+  border-radius: 6px;
+  appearance: none;
+}
+
+.cart__drawer--active {
+  left: 0;
+  opacity: 1;
+  transition: left 0s, opacity 0.2s;
+}
+
+.cart__drawer-box {
+  width: 480px;
+  max-width: 100%;
+  background: #f5f5f5;
+  border-radius: 12px;
+  flex: 1;
+  margin: 24px;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  transition: 0.2s opacity, 0.2s transform;
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.cart__drawer--active .cart__drawer-box {
+  transform: none;
+  opacity: 1;
+}
+
+.cart__drawer-header {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.cart__drawer-header h2 {
+  color: #212529;
+  flex: 1;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.cart__drawer-header-right {
+  color: #a1a1a1;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart__drawer-header-right-items {
+  display: block;
+  font-weight: 500;
+}
+
+.cart__drawer-header-right-close {
+  width: 20px;
+  color: #a1a1a1;
+  cursor: pointer;
+}
+
+.cart__drawer-header-right-close:hover {
+  color: #212529;
+}
+
+.cart__drawer-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart__drawer-items {
+  padding: 24px;
+}
+
+.cart__drawer-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+  background: white;
+  overflow: hidden;
+}
+
+.cart__drawer-item + .cart__drawer-item {
+  margin-top: 10px;
+}
+
+.cart__drawer-item-image {
+  width: 120px;
+}
+
+.cart__drawer-item-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.cart__drawer-item-main {
+  flex: 1;
+  padding: 0 24px;
+}
+
+.cart__drawer-item-main-flex {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart__drawer-item-main-flex-left {
+  flex: 1;
+}
+
+.cart__drawer-item-main-flex-left h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.cart__drawer-item-main-flex-left h3 a {
+  color: #212529;
+}
+
+.cart__drawer-item-main-flex-left span {
+  color: #a1a1a1;
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
+
+.cart__drawer-item-main-flex-right span {
+  font-weight: 500;
+  color: #212529;
+  font-size: 14px;
+}
+
+.cart__drawer-quantity-selector {
+  display: inline-flex;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.cart__drawer-quantity-selector button {
+  width: 28px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cart__drawer-quantity-selector input {
+  width: 28px;
+  font-size: 13px;
+  text-align: center;
+  line-height: 24px;
+  border-left: 1px solid #e7e7e7;
+  border-right: 1px solid #e7e7e7;
+}
+
+.cart__drawer-footer {
+  padding: 24px;
+  margin-top: auto;
+  border-top: 1px solid #e7e7e7;
+}
+
+.cart__drawer-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.cart__drawer-footer-row:last-of-type {
+  margin-bottom: 16px;
+}
+
+.cart__drawer-footer-row h3 {
+  font-weight: 400;
+  color: #525252;
+  font-size: 14px;
+}
+
+.cart__drawer-footer-row span {
+  font-weight: 500;
+  color: #212529;
+  font-size: 14px;
+}
+
+.cart__drawer-button {
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  background-color: #212529;
+  color: #fff;
+  line-height: 46px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+.cart__drawer-empty {
+  margin: auto;
+  color: #212529;
+}
+
+.cart__drawer--input{
+  margin: 0;
+  padding: 0; 
+  height: 25px;
+}
+
+.cart__drawer--cartButton{
+  text-align: center;
+  color: #fff;
+  margin-bottom: 20px;
+}
