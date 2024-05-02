@@ -1,6 +1,9 @@
 
 {{ 'pdp.min.css' | asset_url | stylesheet_tag }}    
 {{ 'pdp.min.js' | asset_url | script_tag }}
+{% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> {% endcomment %}
 
 <section class="pdp font__secondary" data-product='{{ product | json }}'>
     <div class="page-width">
@@ -16,7 +19,7 @@
                                 {% assign height = 400 %}
                                 {% assign alt = variant.featured_media.alt | default: variant.title | escape %}
                                 <div class="pdp__image swiper-slide">
-                                    <img id="product-image" src="{{ imageItem.src | image_url: width: 1500 }}" alt="{{ alt }}" width="{{ width }}" height="{{ height }}">
+                                    <img src="{{ imageItem.src | image_url: width: 1500 }}" alt="{{ alt }}" width="{{ width }}" height="{{ height }}">
                                 </div>
                                 {% endfor %}
                             {% endfor %}
@@ -133,6 +136,33 @@
 </section>
 
 <script>
+    // const productSwiper = document.querySelector(".product-swiper");
+    // const thumbSwiper = document.querySelector(".thumbnail-swiper");
+
+    // const swiper = new Swiper('.product-swiper', {
+    //     loop: true,
+    //     spaceBetween: 10,
+    //     slidesPerView: 4,
+    //     direction: 'horizontal',
+    //     freeMode: true,
+    //     watchSlidesProgress: true,
+    //     breakpoints: {
+    //         1000: {
+    //             direction: 'vertical',
+    //         }
+    //     }
+    // })
+    // const swiperThumbs = new Swiper('.thumbnail-swiper', {
+    //     loop: true,
+    //     spaceBetween: 10,
+    //     navigation: {
+    //         nextEl: ".swiper-button-next",
+    //         prevEl: ".swiper-button-prev",
+    //     },
+    //     thumbs: {
+    //         swiper: swiper,
+    //     },
+    // })
 
     // let product = {{ product | json }}
 

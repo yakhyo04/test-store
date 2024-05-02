@@ -1,8 +1,10 @@
 import './styles/pdp.scss';
 import Swiper from 'swiper';
+import { Thumbs } from 'swiper';
 import 'swiper/css/bundle';
 import { onDocumentReady } from '../utils/dom';
 import { formatMoney } from '../utils/formatMoney';
+import handleActiveItem from '../utils/handleActiveItem';
 
 const state = {
     elements: {},
@@ -36,30 +38,61 @@ const cacheState = () => {
 }
 
 const initializeSwipers = () => {
-        const swiper = new Swiper(state.elements.productSwiper, {
-            loop: true,
-            spaceBetween: 10,
-            slidesPerView: 4,
-            direction: 'horizontal',
-            freeMode: true,
-            watchSlidesProgress: true,
-            breakpoints: {
-                1000: {
-                    direction: 'vertical',
-                }
+    const swiperProduct = new Swiper(state.elements.productSwiper, {
+        loop: true,
+        spaceBetween: 10,
+        slidesPerView: 3,
+        direction: 'horizontal',
+        slideActiveClass: 'swiper-slide-thumb-active',
+        freeMode: true,
+        slideToClickedSlide: true,
+        watchSlidesProgress: true,
+        watchSlidesVisibility: true,
+        breakpoints: {
+            1000: {
+                direction: 'vertical',
+                slidesPerView: 4,
             }
-        })
-        const swiperThumbs = new Swiper(state.elements.thumbSwiper, {
-            loop: true,
-            spaceBetween: 10,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            thumbs: {
-                swiper,
-            },
-        })
+        }
+    })
+    
+    // swiperProduct.on("click", () => {
+    //     const clickedSlideIndex = swiperProduct.clickedIndex;
+    //     console.log({clickedSlideIndex});
+    //     swiperProduct.slideTo(clickedSlideIndex);
+    // })
+
+    const swiperThumbs = new Swiper(state.elements.thumbSwiper, {
+        loop: true,
+        spaceBetween: 10,
+        modules: [Thumbs],
+        slideActiveClass: 'swiper-slide-thumb-active',
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiperProduct,
+        }
+    })
+
+    // let isActive = false;
+
+    // swiperProduct.on("slideChange", () => {
+    //     const currentSlide = swiperProduct.slides[swiperProduct.activeIndex];
+    //     const currentSlideIndex = currentSlide.getAttribute('data-swiper-slide-index');
+    //     swiperThumbs.slideTo(currentSlideIndex);
+    //     isActive = true;
+    // });
+
+    // swiperThumbs.on("slideChange", () => {
+    //     if(isActive) {
+    //         return isActive = !isActive;
+    //     }
+    //     const currentSlide = swiperThumbs.slides[swiperThumbs.activeIndex];
+    //     const currentSlideIndex = currentSlide.getAttribute('data-swiper-slide-index');
+    //     swiperProduct.slideTo(currentSlideIndex);
+    // })
 }
 
 const quantityPlus = () => {
@@ -89,39 +122,28 @@ const buyNow = (e) => {
     state.elements.form.submit();
 }
 
-const optionsChecked = (selectedOptions) => {
-    state.elements.productOptionsChecked.forEach(radio => {
-        selectedOptions.push(radio.value);
-    })
+const buttonsTextChange = (isAvailable) => {
+    const addToCartButton = state.elements.addToCart;
+    const buyItNowButton = state.elements.buyItNow;
+    const buttonText = isAvailable ? ['Add to Cart', 'Buy It Now'] : ['Out of Stock', 'Out of Stock'];
+    const buttonDisabled = !isAvailable;
+    addToCartButton.textContent = buttonText[0];
+    addToCartButton.disabled = buttonDisabled;
+    buyItNowButton.textContent = buttonText[1];
+    buyItNowButton.disabled = buttonDisabled;
 }
 
-const matchedVariant = (selectedOptions) => {
-    const product = JSON.parse(state.elements.productObj);
-    product.variants.find(variant => {
-        let pass = true;
-    
-        for(let i = 0; i < selectedOptions.length; i++){
-            if(selectedOptions.indexOf(variant.options[i]) === -1){
-                pass = false;
-                break;
-            }
-        }
 
-        return pass;
-    })
-}
-
-const productOptionsFunction = () => {
+const onChangeFunction = () => {
+    let product = JSON.parse(state.elements.productObj);
     let selectedOptions = [];
-    const product = JSON.parse(state.elements.productObj);
 
-    state.elements.productOptionsChecked.forEach(radio => {
+    document.querySelectorAll('.product__option input[type="radio"]:checked').forEach(radio => {
         selectedOptions.push(radio.value);
     })
 
     let matchedVariant = product.variants.find(variant => {
         let pass = true;
-    
         for(let i = 0; i < selectedOptions.length; i++){
             if(selectedOptions.indexOf(variant.options[i]) === -1){
                 pass = false;
@@ -132,53 +154,31 @@ const productOptionsFunction = () => {
         return pass;
     })
 
-    state.elements.productId = matchedVariant.id;
+    state.elements.productId.value = matchedVariant.id;
 
-    state.queryParams.params.set('variant', matchedVariant.id);
-    const urlResult = state.queryParams.url.toString() + "?" + state.queryParams.params.toString();
+    buttonsTextChange(matchedVariant.available);
+
+    const price = state.elements.price;
+    const comparePrice = state.elements.comparePrice;
+
+    price.textContent = formatMoney(matchedVariant.price, price.getAttribute('data-price'));
+    comparePrice.textContent = formatMoney(matchedVariant.compare_at_price, comparePrice.getAttribute('data-comparePrice'));
+
+    matchedVariant.compare_at_price > matchedVariant.price ? comparePrice.classList.remove("hide") : comparePrice.classList.add("hide");
+    
+    const url = window.location.pathname;
+    const params = new URLSearchParams(window.location.search);
+    params.set('variant', matchedVariant.id);
+    const urlResult = url.toString() + "?" + params.toString();
     window.history.replaceState(null, null, urlResult);
-
-    state.elements.price.textContent = formatMoney(matchedVariant.price, state.elements.price.getAttribute('data-price'));
-    state.elements.comparePrice.textContent = formatMoney(matchedVariant.compare_at_price, state.elements.comparePrice.getAttribute('data-comparePrice'));
-
-    // matchedVariant.compare_at_price > matchedVariant.price ? state.elements.comparePrice.classlist.remove('hide') : state.elements.comparePrice.classlist.add('hide');
-
-    if(matchedVariant.featured_media){
-        state.elements.imageId.setAttribute('src', matchedVariant.featured_image.src)
-        state.elements.imageSelected.classList.remove("selected");
-        state.elements.images[matchedVariant.featured_image.position - 1].classList.add('swiper-slide-thumb-active');          
-    }
-
-    if(matchedVariant.available){
-        state.elements.addToCart.textContent = 'Add to Cart'
-        state.elements.addToCart.disabled = false
-        state.elements.buyItNow.textContent = 'Buy It Now'
-        state.elements.buyItNow.disabled = false
-    }else{
-        state.elements.addToCart.textContent = 'Out of Stock'
-        state.elements.addToCart.disabled = true
-        state.elements.buyItNow.textContent = 'Out of Stock'
-        state.elements.buyItNow.disabled = true
-    }
-}
-
-const imageSwiperFunction = () => {
-    state.elements.images.forEach(li => {
-        li.addEventListener("click", () => {
-            state.elements.imageSelected.classList.remove("selected");
-            li.classList.add('selected')
-
-            state.elements.productId.setAttribute('src', li.querySelector('img').getAttribute('src'))
-        })
-    })
 }
 
 const attachAddEventListeners = () => {
     state.elements.quantityPlus.addEventListener("click", quantityPlus);
     state.elements.quantityMinus.addEventListener("click", quantityMinus);
     state.elements.buyItNow.addEventListener("click", (e) => buyNow(e));
-    state.elements.productOptions.forEach((radio) => {
-        radio.addEventListener("change", productOptionsFunction)
+    document.querySelectorAll('.product__option input[type="radio"]').forEach(radio => {
+        radio.addEventListener("change", () => onChangeFunction())
     })
 }
 
@@ -188,7 +188,6 @@ const init = () => {
     if(window.loadedScripts["pdp-swiper"]) return;
     window.loadedScripts["pdp-swiper"] = true;
     initializeSwipers();
-    imageSwiperFunction();
 }
 
 onDocumentReady(init);

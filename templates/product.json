@@ -1,11 +1,21 @@
 {
   "sections": {
+    "pdp-banner": {
+      "type": "pdp-banner",
+      "settings": {}
+    },
     "main-pdp": {
       "type": "main-pdp",
+      "settings": {}
+    },
+    "collapsible-details": {
+      "type": "collapsible-details",
       "settings": {}
     }
   },
   "order": [
-    "main-pdp"
+    "pdp-banner",
+    "main-pdp",
+    "collapsible-details"
   ]
 }
