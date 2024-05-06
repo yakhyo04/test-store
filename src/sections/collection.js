@@ -26,8 +26,9 @@ customElements.define("add-to-cart", AddToCart);
 
 const state = {
   elements: {},
-  queryParams: {},
-  queryParam: new URLSearchParams(window.location.search)
+  queryParams: new URLSearchParams(window.location.search),
+  url: new URL(window.location.href),
+  paramQueries: ['sort_by', 'filter.v.price.gte', 'filter.v.price.lte', 'page']
 };
 
 const cacheState = () => {
@@ -55,11 +56,12 @@ const cacheState = () => {
     iconGrid: document.querySelector(".icon__grid"),
     iconList: document.querySelector(".icon__list"),
     collectionProduct: document.querySelectorAll(".collection__product"),
+    collectonFilterForm: document.querySelector(".collection__filter--form"),
+    collectionGridBox: document.querySelector(".collection__grid--box"),
   };
-  state.queryParams = {
-    url: new URL(window.location.href),
-    page: 2,
-    paramQueries: ['sort_by', 'filter.v.price.gte', 'filter.v.price.lte', 'page']
+
+  if(!state.queryParams.get("page")){
+    state.queryParams.set("page", 1)
   }
 };
 
@@ -79,6 +81,9 @@ const toggleFilterDrawer = (force) => {
 
 const renderData = (data) => {
   const newInnerHtml = domParser(data).getElementById("CollectionGrid").innerHTML;
+  const hasNextPageState = domParser(data).querySelector(".collection__grid--box").getAttribute('data-has-next-page');
+
+  state.elements.collectionGridBox.setAttribute("data-has-next-page", hasNextPageState);
   state.elements.collectionGrid.innerHTML = newInnerHtml;
 }
 
@@ -111,7 +116,7 @@ const fetchDataURL = async (url) => {
 
 const fetchData = async () => {
   toggleCollectionGrid(true);
-  const data = await fetchDataURL(state.queryParams.url);
+  const data = await fetchDataURL(state.url);
   if (data) {
     toggleCollectionGrid(false);
     renderData(data);
@@ -119,21 +124,21 @@ const fetchData = async () => {
 };
 
 const setParams = (name, value) => {
-  const params = state.queryParam;
+  const params = state.queryParams;
 
   if(params.has(name, value)){
     params.delete(name, value);
+  }else if((name == 'filter.v.price.gte' || name == 'filter.v.price.lte') && value == ''){
+    params.delete(name)
+  }else if(state.paramQueries.includes(name)){
+    params.set(name, value);
   }else{
-    if(state.queryParams.paramQueries.includes(name)){
-      params.set(name, value);
-    }else{
-      params.append(name, value);
-    }
+    params.append(name, value);
   }
 
-  state.queryParams.url.search = params.toString();
+  state.url.search = params.toString();
 
-  const paramsURL = state.queryParams.url.href;
+  const paramsURL = state.url.href;
 
   window.history.pushState({}, "", paramsURL);
 
@@ -141,16 +146,13 @@ const setParams = (name, value) => {
 }
 
 const loadMoreFunction = async () => {
+  state.queryParams.set('page', parseInt(state.queryParams.get('page')) + 1);
   try {
-    let { page } = state.queryParams;
-    setParams('page', page);
-    const params = state.queryParam.toString();
+    const params = state.queryParams.toString();
     const url = `${window.location.pathname}?section=${window.sectionId}&${params}`;
     const data = await fetchDataURL(url);
     const collectionsWrapper = domParser(data);
     const items = collectionsWrapper.querySelectorAll(".collection__product");
-    setParams('page', page);
-    page += 1;
     updatePaginationBtns(collectionsWrapper.querySelector(".collection__grid--wrapper"));
 
     return items;
@@ -168,12 +170,12 @@ const renderCollections = (items) => {
 const onSortAndFilterChange = (e) => {
   const name = e.target.attributes.name.value;
   const { value } = e.target;
+  state.queryParams.set('page', 1);
 
   setParams(name, value);
 
   fetchData();
 
-  state.queryParams.page = 2;
   togglePaginateBtns(false);
 }
 
@@ -183,23 +185,19 @@ const attachEventListeners = () => {
   state.elements.filterButton.addEventListener("click", () => toggleFilterDrawer(true));
   state.elements.collectionOverlay.addEventListener("click", () => toggleFilterDrawer(false));
   state.elements.filterCloseButton.addEventListener("click", () => toggleFilterDrawer(false));
-  state.elements.collectionButton.addEventListener("click", async () => {
-    const productItem = await loadMoreFunction();
-    renderCollections(productItem);
-  });
+  if (state.elements.collectionButton) {
+    state.elements.collectionButton.addEventListener("click", async () => {
+      const productItem = await loadMoreFunction();
+      renderCollections(productItem);
+    });
+  }
+
   state.elements.sortBy.addEventListener("change", (e) => {
     onSortAndFilterChange(e);
   });
-  state.elements.collectionFilterPrice.forEach((price) => {
-    price.addEventListener("change", async (e) => {
-      onSortAndFilterChange(e);
-    });
-  });
-  state.elements.collectionFilterCheckbox.forEach((checkbox) => {
-    checkbox.addEventListener("change", async (e) => {
-      onSortAndFilterChange(e);
-    });
-  });
+  state.elements.collectonFilterForm.addEventListener("change", async (e) => {
+    onSortAndFilterChange(e);
+  })
 };
 
 const init = () => {

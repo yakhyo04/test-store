@@ -51,20 +51,25 @@
                 {% render 'icon' with 'close' %}
                 {% render 'collection-filters', results: collection %}
             </div>
-            <div class="collection__grid--box">
             {% paginate collection.products by section.settings.perpage_range %}
-                    <div class="collection__grid--wrapper" {% if paginate.next %}
+            <div class="collection__grid--box" data-has-next-page='{%if paginate.next %}true{% else %}false{% endif %}'>
+                <div class="collection__grid--wrapper {% if collection.products.size < 1 %}active{% endif %}" {% if paginate.next %}
                         data-next="true"
                     {% endif %} data-page="{{ paginate.current_page }}" id="CollectionGrid" data-layout="{{ section.settings.product_type }}">
-                        {% for product in collection.products %}
-                            {% render 'collection-product', product: product %}
-                        {% endfor %}
+                        {% if collection.products.size >= 1 %}
+                            {% for product in collection.products %}
+                                {% render 'collection-product', product: product %}
+                            {% endfor %}
+                        {% else %}
+                            <p class="collection__empty--variant">No products in this variant</p>
+                        {% endif %}
                     </div>
 
-                    {% if paginate.pages > 1 %}                        
+                    {% if paginate.pages > 1 %}
+                        {% comment %} {% if collection.products.size > section.settings.perpage_range %}                             {% endcomment %}
                         {% if section.settings.select != blank %}
                             {% if section.settings.select == 'load-more' %}
-                            <button class="button collection__load--button collection__paginate--btn">Load more</button>
+                                <button class="button collection__load--button collection__paginate--btn">Load more</button>
                             {% elsif section.settings.select == 'pagination' %}
                                     <div class="pagination collection__paginate--btn">
                                     <a href="{{ paginate.previous.url }}" data-pagination-link name="page" data-value="{{ paginate.previous.url }}" class="pagination__link {% if paginate.previous.url %}pagination-active{% else %}pagination-notactive{% endif %}"><<</a>
@@ -81,9 +86,10 @@
                                     </div>
                                 {% endif %}
                             {% endif %}
+                        {% comment %} {% endif %}                                            {% endcomment %}
                     {% endif %}
+                    </div>
                 {% endpaginate %}
-                </div>
         </div>
     </div>
 </div>

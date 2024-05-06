@@ -87,7 +87,14 @@
 }
 .collection__grid--box{
     width: 80%;
+    
+    &[data-has-next-page='false'] {
+        .collection__load--button {
+        display: none;
+        }
+    }
 }
+
 .icon__grid,
 .icon__list{
     cursor: pointer;
@@ -103,6 +110,16 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(4, 1fr);
+    position: relative;
+    width: 100%;
+}
+.collection__empty--variant{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    color: red;
+    font-size: 30px;
+    font-weight: bold;
 }
 .collection__product{
     display: flex;
