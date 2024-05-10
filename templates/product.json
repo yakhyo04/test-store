@@ -4,6 +4,10 @@
       "type": "pdp-banner",
       "settings": {}
     },
+    "pdp": {
+      "type": "pdp",
+      "settings": {}
+    },
     "main-pdp": {
       "type": "main-pdp",
       "settings": {}
@@ -15,6 +19,7 @@
   },
   "order": [
     "pdp-banner",
+    "pdp",
     "main-pdp",
     "collapsible-details"
   ]

@@ -76,6 +76,43 @@ const initializeSwipers = () => {
         }
     })
 
+    const swiper = new Swiper('.pdp__slider--wrapper2', {
+        enabled: false,
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            hide: false,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            300: {
+                enabled: true,
+                on: {
+                    breakpoint: function(){
+                        swiper.init();
+                    }
+                }
+            },
+            1009: {
+                enabled: false,
+                on: {
+                    breakpoint: function(){
+                        swiper.destroy();
+                    }
+                }
+            }
+        },
+    });
+
+    swiper.on('breakpoint', function (swiper, breakpointParams) {
+        console.log("hellooooo worlddddd", breakpointParams)
+        if (!breakpointParams.enabled) {
+            swiper.destroy();
+        }
+    })
+
     // let isActive = false;
 
     // swiperProduct.on("slideChange", () => {
