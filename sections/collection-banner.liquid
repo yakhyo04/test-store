@@ -1,0 +1,24 @@
+{{ 'collection.min.css' | asset_url | stylesheet_tag }}
+
+<div class="collection__banner">
+    <div class="page-width">
+        <div class="collection__banner--wrapper">
+            <h1 class="collection__banner--heading">{{ collection.title }}</h1>
+            {% render 'breadcrumbs' %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Collection Banner",
+    "settings": [
+        {
+            "type": "text",
+            "id": "heading",
+            "default": "Shop Grid Default",
+            "label": "Heading Text"
+        }
+    ]
+}
+{% endschema %}

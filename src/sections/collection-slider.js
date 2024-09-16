@@ -1,5 +1,6 @@
 import './styles/collection-slider.scss';
 import { onDocumentReady } from '../utils/dom';
+import { addToCart } from '../utils/addToCart';
 
 const state = {
     elements: {}
@@ -9,38 +10,6 @@ const cacheState = () => {
     state.elements = {
         mySwiper: document.querySelectorAll(".collection__slider--swiper"),
     }
-}
-
-const addToCart = (e) => {
-    const { target } = e;
-
-    if(!target.closest("[data-item='button']")) return false;
-
-    e.preventDefault();
-
-    const productId = target.closest("[data-id]").dataset.id;
-
-    const formData = {
-        items: [
-            {
-                id: productId,
-                quantity: 1,
-            }
-        ]
-    }
-
-    fetch(window.Shopify.routes.root + 'cart/add.js', {
-        method: 'POST',
-        headers: {
-            "Content-Type": 'application/json'
-        },
-        body: JSON.stringify(formData),
-    })
-    .then((res) => res.json())
-    .then((data) => data)
-    .catch((error) => {
-        console.log("Error message: ", error)
-    })
 }
 
 const initializeSwipers = () => {
