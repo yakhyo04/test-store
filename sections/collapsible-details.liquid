@@ -1,0 +1,62 @@
+{{ 'collapsible-details.min.css' | asset_url | stylesheet_tag }}
+{{ 'collapsible-details.min.js' | asset_url | script_tag }}
+
+{% assign activeIndex = 1 %}
+
+<div class="collapsible-details" style="background-color: {{ section.settings.background_color }};">
+    <div class="page-width">
+        <div class="collapsible-details__wrapper">
+            <div class="collapsible-details__headers">
+            <div class="collapsible-details__header {% if forloop.index == 1 %}active{% endif %}">Description</div>
+                {% for block in section.blocks %}
+                    <div class="collapsible-details__header {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.title  }}</div>
+                {% endfor %}
+            </div>
+            <div class="collapsible-details__body">
+                <div class="collapsible-details__content {% if forloop.index == 1 %}active{% endif %}">{{ product.description }}</div>
+                {% for block in section.blocks %}
+                    <div class="collapsible-details__content {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.description  }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Product Tabs",
+    "blocks": [
+        {
+            "name": "Tabs-block",
+            "type": "tabs-block",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "default": "Lorem ipsum",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "default": "<p></p>",
+                    "label": "Description"
+                }
+            ]
+        }
+    ],
+    "settings": [
+        {
+            "type": "color",
+            "id": "background_color",
+            "default": "#F9F8FE",
+            "label": "Background Color"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Tabs"
+        }
+    ]
+}
+{% endschema %}

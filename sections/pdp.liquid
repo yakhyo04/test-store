@@ -1,0 +1,177 @@
+{{ 'pdp.min.js' | asset_url | script_tag }}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<section class="pdp__section">
+    <div class="pdp__section--container">
+        <div class="pdp__section--wrapper">
+            <div class="pdp__slider--wrapper2 swiper">
+                {% render 'pdp-slider', product: product %}
+            </div>
+            <div class="nav-container">
+                {% render 'pdp-content', product: product %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .pdp__slider{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+    }
+    .pdp__section--container{
+        padding: 0 4rem 4rem 4rem;
+    }
+    .product__buttons{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .pdp__slider--image,
+    .pdp__slider--video{
+        grid-column: 1 / 3;
+        order: 3;
+        grid-area: auto;
+        position: relative;
+        padding-bottom: 100%;
+    }
+    .pdp__slider--video{
+        order: 2;
+    }
+    .pdp__slider--image img,
+    .pdp__slider--video video{
+        position: absolute;
+        top: 0;
+        object-fit: cover;
+        height: auto !important;
+    }
+    .pdp__slider--image:first-child{
+        order: 1;
+        grid-column-start: 1;
+        grid-column-end: 1;
+        grid-column: 1 / 3;
+    }
+    .pdp__section--wrapper{
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .pdp__section--wrapper .pdp__slider--wrapper2{
+        width: 58%;
+        height: 100%;
+    }
+    .nav-container .pdp__content--wrapper{
+        width: 100%;
+    }
+    .nav-container{
+        width: 42%;
+        max-width: 100%;
+        flex-grow: 1;
+        position: relative;
+        display: block;
+    }
+    .is-sticky {
+        top: 0;
+        position: fixed;
+        /* width: calc(40% - 97px) !important; */
+        width: calc(42% - 40px) !important;
+    }
+
+    @media (max-width: 1008px){
+        .pdp__section--container{
+            padding: 0;
+        }
+        .pdp__slider{
+            display: flex;
+            gap: unset;
+        }
+        .pdp__section--wrapper{
+            flex-direction: column;
+        }
+        .pdp__section--wrapper .pdp__slider--wrapper2,
+        .nav-container{
+            width: 100%;
+        }
+        .is-sticky {
+            position: unset;
+            width: 100% !important;
+        }
+        .swiper-scrollbar-drag,
+        .swiper-button-next.swiper-button-disabled,
+        .swiper-button-prev.swiper-button-disabled,
+        .swiper-button-next,
+        .swiper-button-prev{
+            display: flex !important;
+        }
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    let sticky = document.getElementsByClassName('sticky-element')[0];
+    let stickyAnchor = sticky.parentNode;
+    let state = false;
+
+    function getAnchorOffset() {
+    return stickyAnchor.getBoundingClientRect().top;
+    }
+
+    updateSticky = function (e) {
+    if (!state && getAnchorOffset() < 0) {
+        sticky.classList.add('is-sticky');
+        state = true;
+    } else if (state && getAnchorOffset() >= 0) {
+        sticky.classList.remove('is-sticky');
+        state = false;
+    }
+    };
+
+    window.addEventListener('scroll', updateSticky);
+    window.addEventListener('resize', updateSticky);
+
+    updateSticky();
+
+        // const swiper = new Swiper('.pdp__slider--wrapper2', {
+        //     enabled: false,
+        //     scrollbar: {
+        //         el: ".swiper-scrollbar",
+        //         hide: false,
+        //     },
+        //     navigation: {
+        //         nextEl: ".swiper-button-next",
+        //         prevEl: ".swiper-button-prev",
+        //     },
+        //     breakpoints: {
+        //         300: {
+        //             enabled: true,
+        //             on: {
+        //                 breakpoint: function(){
+        //                     swiper.init();
+        //                 }
+        //             }
+        //         },
+        //         1009: {
+        //             enabled: false,
+        //             on: {
+        //                 breakpoint: function(){
+        //                     swiper.destroy();
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
+        
+        // window.addEventListener("DOMContentLoaded", function(){
+        //     swiper.on('breakpoint', function (swiper, breakpointParams) {
+        //         if (!breakpointParams.enabled) {
+        //             swiper.destroy();
+        //         }
+        //     })
+        // })
+</script>

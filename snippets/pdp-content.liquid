@@ -1,0 +1,77 @@
+<div class="pdp__content--wrapper sticky-element">
+    <h3 class="pdp__title">{{ product.title | escape }}</h3>
+    <div class="pdp__price--wrapper">
+        <p class="pdp__price" data-price="{{ shop.money_format }}">{{ product.selected_or_first_available_variant.price | money }}</p>
+        <p data-comparePrice="{{ shop.money_format }}" class="pdp__compare--price {% unless product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}hide{% endunless %}">{{ product.selected_or_first_available_variant.compare_at_price | money }}</p>
+    </div>
+    <p class="pdp__description">{{ product.description }}</p>
+
+    {% form 'product', product %}
+        <input id="product__id" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+    {% if product.variants.size >= 1 %}
+        <div class="product__option">
+            {% for option in product.options_with_values %}
+                <div class="product__option--wrapper">
+                    <p class="product__option--title">{{ option.name }}</p>
+                    <div class="product__option--fieldset">
+                        {% for value in option.values %}
+                            <div class="product__option--variants">
+                                <input 
+                                    type="radio" 
+                                    name="{{ option.name }}" 
+                                    {% if option.selected_value == value %}checked{% endif %}
+                                    value="{{ value }}"
+                                    id="{{ option.name | handleize }}-{{ value | handleize }}"        
+                                > 
+                                <label class="product__option--label" for="{{ option.name | handleize }}-{{ value | handleize }}">{{ value }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% assign productHandles = product.metafields.product.product_handles | split: ', ' %}
+        <div>
+            <ul style="display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0;">
+                {% for productHandle in productHandles %}
+                    <li data-value="{{ productHandle }}" style="width: 6.3rem; height: 7.8rem; background-size: cover; background-repeat: no-repeat; overflow: hidden; position: relative;">
+                        {% comment %} <div style="background-image: url({{ all_products[productHandle].featured_media | image_url: width: '100%' }}); width: 100%; height: 0; padding-bottom: 120%; background-position: center; background-size: cover; background-repeat: no-repeat;"></div> {% endcomment %}
+                        <img style="width: 100%; background-position: center; background-size: cover; background-repeat: no-repeat;" src="{{ all_products[productHandle].featured_media | image_url: width: 50 }}" alt="{{ all_products[productHandle].title }}">
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="product__option--quantity">
+            <label class="product__option--title" for="quantity">Quantity</label>
+            <div>
+                <div class="quantity__selector">
+                    <button type="button" class="quantity__selector--minus">-</button>
+                    <input id="quantity" name="quantity" value="1" class="quantity__selector--inputSelector">
+                    <button type="button" class="quantity__selector--plus">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product__buttons">
+            <button {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} type="submit" class="product__add pdp__button" id="add-to-cart">
+                {% if product.selected_or_first_available_variant.available %}
+                    Add to cart
+                {% else %}
+                    Out of stock
+                {% endif %}
+            </button>
+
+            <button {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} type="submit" class="product__add pdp__button" id="buy-it-now">
+                {% if product.selected_or_first_available_variant.available %}
+                    Buy It Now
+                {% else %}
+                    Out of stock
+                {% endif %}
+            </button>
+        </div>
+    {% endform %}
+</div>

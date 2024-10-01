@@ -1,0 +1,19 @@
+<div class="pdp__slider swiper-wrapper">
+    {% for imageItem in product.images %}  
+        {% assign aspect_ratio = variant.featured_media.preview_image.aspect_ratio %}
+        {% assign width = 400 %}
+        {% assign height = 400 %}
+        {% assign alt = variant.featured_media.alt | default: variant.title | escape %}
+        <div class="pdp__slider--image swiper-slide">
+            <img src="{{ imageItem.src | image_url: width: 1500 }}" alt="{{ alt }}" width="100%" height="100%">
+        </div>
+    {% endfor %}
+    <div class="pdp__slider--image pdp__slider--video swiper-slide">
+        <video autoplay muted loop playsinline style="width: 100%; height: 100%;" type="video/mp4" src="{{ product.metafields.product.video_url }}">
+            {% comment %} <source src="{{ product.metafields.product.video_url }}" type="video/mp4"> {% endcomment %}
+        </video>
+    </div>
+</div>
+<div class="swiper-button-next"></div>
+<div class="swiper-button-prev"></div>
+<div class="swiper-scrollbar"></div>

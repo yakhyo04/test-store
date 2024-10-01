@@ -1,0 +1,263 @@
+
+{{ 'pdp.min.css' | asset_url | stylesheet_tag }}    
+{{ 'pdp.min.js' | asset_url | script_tag }}
+{% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> {% endcomment %}
+
+<section class="pdp font__secondary" data-product='{{ product | json }}'>
+    <div class="page-width">
+        <div class="pdp__box">
+            <div class="pdp__wrapper">
+                <div class="pdp__slider--wrapper">
+                    <div class="swiper thumbnail-swiper">
+                        <div class="pdp__image--wrapper swiper-wrapper">
+                            {% for variant in product.variants %}
+                                {% for imageItem in product.images %}  
+                                {% assign aspect_ratio = variant.featured_media.preview_image.aspect_ratio %}
+                                {% assign width = 400 %}
+                                {% assign height = 400 %}
+                                {% assign alt = variant.featured_media.alt | default: variant.title | escape %}
+                                <div class="pdp__image swiper-slide">
+                                    <img src="{{ imageItem.src | image_url: width: 1500 }}" alt="{{ alt }}" width="{{ width }}" height="{{ height }}">
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>  
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <div thumbsSlider="" class="swiper product-swiper">
+                        <div class="pdp__image--wrapper swiper-wrapper">
+                            {% for variant in product.variants %}
+                                {% for imageItem in product.images %}  
+                                {% assign aspect_ratio = variant.featured_media.preview_image.aspect_ratio %}
+                                {% assign width = 400 %}
+                                {% assign height = 400 %}
+                                {% assign alt = variant.featured_media.alt | default: variant.title | escape %}
+                                <div class="pdp__image swiper-slide">
+                                    <img src="{{ imageItem.src | image_url: width: 1500 }}" alt="{{ alt }}" width="{{ width }}" height="{{ height }}">
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>  
+                    </div>
+                </div>
+
+                {% comment %} <div class="pdp__slider--wrapper">
+                    {% if product.selected_or_first_available_variant.featured_image %}
+                        {% assign featured = product.selected_or_first_available_variant.featured_image %}
+                        <img id="product-image" src="{{ featured | image_url }}" alt="{{ product.title }}">        
+                    {% else %}
+                        {% assign featured = product.featured_image %}
+                        <img id="product-image" src="{{ featured | image_url }}" alt="{{ product.title }}">
+                    {% endif %}
+
+                    <ul class="product__image--thumbs">
+                        {% for image in product.images %}
+                            <li class="{% if image == featured %}selected{% endif %}">
+                                <img src="{{ image | image_url }}" alt="{{ product.title }}">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div> {% endcomment %}
+                <div class="pdp__content--wrapper">
+                    <h3 class="pdp__title">{{ product.title | escape }}</h3>
+                    <div class="pdp__price--wrapper">
+                        <p class="pdp__price" data-price="{{ shop.money_format }}">{{ product.selected_or_first_available_variant.price | money }}</p>
+                        <p data-comparePrice="{{ shop.money_format }}" class="pdp__compare--price {% unless product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}hide{% endunless %}">{{ product.selected_or_first_available_variant.compare_at_price | money }}</p>
+                    </div>
+                    <p class="pdp__description">{{ product.description }}</p>
+                    {% comment %} <div class="pdp__variant--wrapper">
+                    {% for variant in product.variants %}
+                        <p class="pdp__varaint--item">{{ variant.title }}</p>
+                    {% endfor %}
+                    </div>
+                    <button class="pdp__button" type="submit">Add To Cart</button> {% endcomment %}
+
+                    {% form 'product', product %}
+                        <input id="product__id" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+                    {% if product.variants.size >= 1 %}
+                        <div class="product__option">
+                            {% for option in product.options_with_values %}
+                                <div class="product__option--wrapper">
+                                    <p class="product__option--title">{{ option.name }}</p>
+                                    <div class="product__option--fieldset">
+                                        {% for value in option.values %}
+                                            <div class="product__option--variants">
+                                                <input 
+                                                    type="radio" 
+                                                    name="{{ option.name }}" 
+                                                    {% if option.selected_value == value %}checked{% endif %}
+                                                    value="{{ value }}"
+                                                    id="{{ option.name | handleize }}-{{ value | handleize }}"        
+                                                > 
+                                                <label class="product__option--label" for="{{ option.name | handleize }}-{{ value | handleize }}">{{ value }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                        <div class="product__option--quantity">
+                            <label class="product__option--title" for="quantity">Quantity</label>
+                            <div>
+                                <div class="quantity__selector">
+                                    <button type="button" class="quantity__selector--minus">-</button>
+                                    <input id="quantity" name="quantity" value="1" class="quantity__selector--inputSelector">
+                                    <button type="button" class="quantity__selector--plus">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} type="submit" class="product__add pdp__button" id="add-to-cart">
+                            {% if product.selected_or_first_available_variant.available %}
+                                Add to cart
+                            {% else %}
+                                Out of stock
+                            {% endif %}
+                        </button>
+
+                        <button {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} type="submit" class="product__add pdp__button" id="buy-it-now">
+                            {% if product.selected_or_first_available_variant.available %}
+                                Buy It Now
+                            {% else %}
+                                Out of stock
+                            {% endif %}
+                        </button>
+                    {% endform %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // const productSwiper = document.querySelector(".product-swiper");
+    // const thumbSwiper = document.querySelector(".thumbnail-swiper");
+
+    // const swiper = new Swiper('.product-swiper', {
+    //     loop: true,
+    //     spaceBetween: 10,
+    //     slidesPerView: 4,
+    //     direction: 'horizontal',
+    //     freeMode: true,
+    //     watchSlidesProgress: true,
+    //     breakpoints: {
+    //         1000: {
+    //             direction: 'vertical',
+    //         }
+    //     }
+    // })
+    // const swiperThumbs = new Swiper('.thumbnail-swiper', {
+    //     loop: true,
+    //     spaceBetween: 10,
+    //     navigation: {
+    //         nextEl: ".swiper-button-next",
+    //         prevEl: ".swiper-button-prev",
+    //     },
+    //     thumbs: {
+    //         swiper: swiper,
+    //     },
+    // })
+
+    // let product = {{ product | json }}
+
+    // document.querySelectorAll('.product__option input[type="radio"]').forEach(radio => {
+    //     radio.addEventListener("change", () => {
+    //         let selectedOptions = [];
+
+    //         document.querySelectorAll('.product__option input[type="radio"]:checked').forEach(radio => {
+    //             selectedOptions.push(radio.value);
+    //         })
+
+    //         let matchedVariant = product.variants.find(variant => {
+    //             let pass = true;
+    //             for(let i = 0; i < selectedOptions.length; i++){
+    //                 if(selectedOptions.indexOf(variant.options[i]) === -1){
+    //                     pass = false;
+    //                     break;
+    //                 }
+    //             }
+
+    //             return pass;
+    //         })
+
+    //         document.querySelector('#product__id').value = matchedVariant.id
+
+    //         const url = window.location.pathname;
+    //         const params = new URLSearchParams(window.location.search);
+    //         params.set('variant', matchedVariant.id);
+    //         const urlResult = url.toString() + "?" + params.toString();
+    //         console.log(urlResult);
+    //         window.history.replaceState(null, null, urlResult);
+
+    //         document.querySelector(".pdp__price").textContent = formatMoney(matchedVariant.price, "{{ shop.money_format }}");
+    //         document.querySelector(".pdp__compare--price").textContent = formatMoney(matchedVariant.compare_at_price, "{{ shop.money_format }}");
+
+    //         matchedVariant.compare_at_price > matchedVariant.price ? document.querySelector(".pdp__compare--price").classList.remove("hide") : document.querySelector(".pdp__compare--price").classList.add("hide");
+
+    //         if(matchedVariant.featured_image){
+    //             document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
+    //             document.querySelector('.product-swiper .pdp__image.selected').classList.remove("selected");
+            
+    //             document.querySelectorAll('.product-swiper .pdp__image')[matchedVariant.featured_image.position - 1].classList.add('swiper-slide-thumb-active');
+                
+    //         }
+
+    //         let add = document.querySelector('#add-to-cart')
+    //         let buy = document.querySelector('#buy-it-now')
+
+    //         if(matchedVariant.available){
+    //             add.textContent = 'Add to Cart'
+    //             add.disabled = false
+    //             buy.textContent = 'Buy It Now'
+    //             buy.disabled = false
+    //         }else{
+    //             add.textContent = 'Out of Stock'
+    //             add.disabled = true
+    //             buy.textContent = 'Out of Stock'
+    //             buy.disabled = true
+    //         }
+    //     })
+    // })
+
+    // document.querySelectorAll('.product-swiper .pdp__image').forEach(li => {
+    //     li.addEventListener("click", () => {
+    //         document.querySelector('.product-swiper .pdp__image.selected').classList.remove("selected");
+    //         li.classList.add('selected')
+
+    //         document.querySelector('#product-image').setAttribute('src', li.querySelector('img').getAttribute('src'))
+    //     })
+    // })
+
+    // document.querySelector('#buy-it-now').addEventListener("click", (e) => {
+    //     e.preventDefault();
+
+    //     let form = document.querySelector('.shopify-product-form')
+
+    //     let input = document.createElement('input');
+    //     input.value = '/checkout'
+    //     input.type = 'hidden'
+    //     input.name = 'return_to'
+
+    //     form.appendChild(input);
+    //     form.submit();
+    // })
+
+    // document.querySelector('.quantity__selector--plus').addEventListener("click", () => {
+    //     let currentVal = Number(document.querySelector('#quantity').value);
+    //     document.querySelector('#quantity').value = currentVal + 1
+    // })
+
+    // document.querySelector('.quantity__selector--minus').addEventListener("click", () => {
+    //     let currentVal = Number(document.querySelector('#quantity').value);
+
+    //     if(currentVal > 1){
+    //         document.querySelector('#quantity').value = currentVal - 1
+    //     }
+    // })
+  </script>
